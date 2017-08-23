@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} Awesome {% endblock %}</title>
+    {% block head %}
+        <!-- TODO: use url_for here: -->
+        <link rel="stylesheet" href="{{url_for('static', filename='bootstrap.min.css')}}">
+    {% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<a class="navbar-brand" href="#">My Site</a>
+{% block nav %}
+
+<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+
+          <li class="nav-item">
+                <a class="nav-link" href="{{url_for('secret')}}">Secret</a>
+          </li>
+
+          <li class="nav-item">
+            {% if is_logged_in() %}
+                <span class="nav-link">{{ get_username() }}
+                <a  href="{{url_for('simplelogin.logout')}}"> Logout</a></span>
+            {% else %}
+                <a class="nav-link" href="{{url_for('simplelogin.login')}}">Login</a>
+            {% endif %}
+          </li>
+
+        </ul>
+      </div>
+{% endblock %}
+</nav>
+
+<div class="jumbotron">
+    <div class="container">
+       {% block messages %}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul class="flashes alert alert-primary">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+            {% endwith %}
+        {% endblock %}
+    </div>
+</div>
+
+<div class="container">
+{% block page_body %}
+<div class="row">
+<p>
+    Content comes here!
+</p>
+</div>
+{% endblock %}
+</div>
+
+<div class="container">
+<footer>
+{% block footer %}
+    <address>
+    Written by <a href="mailto:webmaster@example.com">Jon Doe</a>.<br>
+    Visit us at: Example.com Box 564, Disneyland USA<br>
+    Copyright 1996
+    </address>
+{% endblock %}
+</footer>
+</div>
+
+{% block tail%}{% endblock %}
+</body>
+</html>
