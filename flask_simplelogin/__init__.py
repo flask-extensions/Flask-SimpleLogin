@@ -1,5 +1,5 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.0'
+__version__ = '0.0.1'
 
 import os
 from functools import wraps
