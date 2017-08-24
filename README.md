@@ -58,24 +58,62 @@ The username defaults to `admin` and the password defaults to `secret` (yeah tha
 
 ## Configuring
 
+Simple way
+
 ```python
 from flask import Flask
 from flask_simplelogin import SimpleLogin
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'something-secret'
-# TIP: use `dynaconf` to configure your Flask app and those values will be taken from environment variables.
+app.config['SIMPLELOGIN_USERNAME'] = 'chuck'
+app.config['SIMPLELOGIN_PASSWORD'] = 'norris'
+
+SimpleLogin(app)
+```
+
+That works, but is not so clever, lets use env vars.
+
+```bash
+$ export SIMPLELOGIN_USERNAME=chuck
+$ export SIMPLELOGIN_PASSWORD=norris
+```
+
+then `SimpleLogin` will read those env vars automatically.
+
+```python
+from flask import Flask
+from flask_simplelogin import SimpleLogin
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'something-secret'
+SimpleLogin(app)
+```
+
+But what if you have more users and more complex auth logic?
+**write a custom login checker**
+
+### Using a custom login checker
+
+```python
+from flask import Flask
+from flask_simplelogin import SimpleLogin
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'something-secret'
 
 
-def auth_my_user(user):
+def only_chuck_norris_can_login(user):
     "user = {'username': 'foo', 'password': 'bar'}"
     # do the authentication here, it is up to you!
     # query your database, check your user/passwd file
     # connect to external service.. anything.
-    return True or False  # True = authenticated
+    is user.get('username') == 'chuck' and user.get('password') == 'norris':
+       return True  # Allowed
+    return False  # Denied
 
 
-SimpleLogin(app, login_checker=auth_my_user)
+SimpleLogin(app, login_checker=only_chuck_norris_can_login)
 ```
 
 ## Checking if user is logged in

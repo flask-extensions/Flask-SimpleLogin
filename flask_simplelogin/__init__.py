@@ -1,10 +1,11 @@
 """Flask Simple Login - Login Extension for Flask"""
 __version__ = '0.0.0'
 
+import os
 from functools import wraps
 from flask import (
     Blueprint, render_template, abort, session,
-    request, redirect, flash, url_for
+    request, redirect, flash, url_for, current_app
 )
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
@@ -25,7 +26,15 @@ def default_login_checker(user):
     """
     username = user.get('username')
     password = user.get('password')
-    if username == 'admin' and password == 'secret':
+    the_username = os.environ.get(
+        'SIMPLELOGIN_USERNAME',
+        current_app.config.get('SIMPLELOGIN_USERNAME', 'admin')
+    )
+    the_password = os.environ.get(
+        'SIMPLELOGIN_PASSWORD',
+        current_app.config.get('SIMPLELOGIN_PASSWORD', 'secret')
+    )
+    if username == the_username and password == the_password:
         return True
     return False
 
@@ -136,8 +145,8 @@ class SimpleLogin(object):
                 return redirect(destiny)
             else:
                 flash('invalid credentials')
-                # return redirect(url_for('simplelogin.login', next=destiny))
-                return render_template('login.html', form=form), 400
+                return redirect(url_for('simplelogin.login', next=destiny))
+                # return render_template('login.html', form=form), 400
         return render_template('login.html', form=form)
 
     def logout(self):
