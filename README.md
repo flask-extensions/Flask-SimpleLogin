@@ -1,3 +1,9 @@
+[![Travis](https://img.shields.io/travis/rochacbruno/flask_simplelogin.svg?style=flat-square)](https://travis-ci.org/rochacbruno/flask_simplelogin)
+[![PyPI](https://img.shields.io/pypi/v/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
+[![PyPI](https://img.shields.io/pypi/pyversions/flask_simplelogin.svg?style=flat-square)]()
+[![PyPI](https://img.shields.io/pypi/format/flask_simplelogin.svg?style=flat-square)]()
+[![Flask](https://img.shields.io/badge/Flask-Extension-blue.svg?style=flat-square)]()
+
 # Login Extension for Flask
 
 There are good and recommended options to deal with web authentication
@@ -33,6 +39,8 @@ What it does not provide:
 - ~~Role or user based access control~~
 
 ## Hot it works
+
+First install it from [PyPI](https://pypi.org/project/flask_simplelogin/).
 
 > `pip install flask_simplelogin`
 
@@ -140,7 +148,7 @@ Example is:
 {% endblock %}
 ```
 
-> Take a look at the examples app in this repository.
+> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/app.py).
 
 And you can customize it in anyway you want and need, it receives a `form` in context and it is a `WTF form` the submit should be done to `request.path` which is the same `/login` view.
 
