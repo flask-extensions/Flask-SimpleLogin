@@ -108,7 +108,7 @@ def only_chuck_norris_can_login(user):
     # do the authentication here, it is up to you!
     # query your database, check your user/passwd file
     # connect to external service.. anything.
-    is user.get('username') == 'chuck' and user.get('password') == 'norris':
+    if user.get('username') == 'chuck' and user.get('password') == 'norris':
        return True  # Allowed
     return False  # Denied
 
