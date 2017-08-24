@@ -200,7 +200,7 @@ You can also use `{% if is_logged_in %}` in your template if needed.
 - having a `SECRET_KEY` set in your `app.config`
 
 
-# Do you need Access Control? you can easily mix `flask_simplelogin` with `flask_allows`
+### Do you need Access Control? you can easily mix `flask_simplelogin` with `flask_allows`
 
 https://github.com/justanr/flask-allows
 `pip install flask_allows`
