@@ -4,5 +4,10 @@ python:
 install:
   - "pip install flit"
   - "pip install pytest-flask"
+  - "pip install flake8"
   - "flit install --symlink"
-script: py.test tests/
+script:
+  - "flake8 flask_simplelogin/"
+  - "flake8 example/"
+  - "flake8 tests/"
+  - "py.test -v tests/"

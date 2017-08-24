@@ -1,6 +1,5 @@
-import pytest
 from flask import url_for, session
-from flask_simplelogin import is_logged_in
+# from flask_simplelogin import is_logged_in
 
 
 def test_get_login(client):
@@ -12,7 +11,7 @@ def test_get_login(client):
 def test_post_requires_token(client):
     response = client.post(
         url_for('simplelogin.login'),
-        data={'username': 'admin', 'username': 'secret'}
+        data={'username': 'admin', 'password': 'secret'}
     )
     assert response.status_code == 200
     assert 'csrf_token The CSRF token is missing' in str(response.data)

@@ -4,7 +4,7 @@ __version__ = '0.0.1'
 import os
 from functools import wraps
 from flask import (
-    Blueprint, render_template, abort, session,
+    Blueprint, render_template, session,
     request, redirect, flash, url_for, current_app
 )
 from flask_wtf import FlaskForm
