@@ -239,3 +239,7 @@ def a_view():
     return "staff only can see this"
 
 ```
+
+### Looking for a solution to authenticate API calls?
+
+Take a look at [Flask-JWT-Simple](https://github.com/vimalloc/flask-jwt-simple) and of course you can mix SimpleLogin + JWT Simple
