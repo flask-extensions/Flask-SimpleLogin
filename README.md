@@ -30,14 +30,16 @@ What it provides:
 - Function to check if user is logged-in
 - Decorator for views
 - Easy and customizable `login_checker`
+- Basic-Auth for API endpoints
 
 What it does not provide:
-(but of course you can easily implement by your own)
 
 - ~~Database Integration~~
 - ~~Password management~~
-- ~~API authentication~~
+- ~~API authentication with Token or JWT~~
 - ~~Role or user based access control~~
+
+> of course you can easily implement all above by your own.
 
 ## Hot it works
 
@@ -53,9 +55,15 @@ app = Flask(__name__)
 SimpleLogin(app)
 ```
 
-That's it! now you have `/login` and `/logout` routes in your application.
+## **That's it!**
+
+Now you have `/login` and `/logout` routes in your application.
 
 The username defaults to `admin` and the password defaults to `secret` (yeah that's not clever, let's see how to change it)
+
+
+![Login Screen](/login_screen.png)
+
 
 ## Configuring
 
@@ -105,13 +113,10 @@ app.config['SECRET_KEY'] = 'something-secret'
 
 
 def only_chuck_norris_can_login(user):
-    "user = {'username': 'foo', 'password': 'bar'}"
-    # do the authentication here, it is up to you!
-    # query your database, check your user/passwd file
-    # connect to external service.. anything.
+    """:param user: dict {'username': 'foo', 'password': 'bar'}"""
     if user.get('username') == 'chuck' and user.get('password') == 'norris':
-       return True  # Allowed
-    return False  # Denied
+       return True  # <--- Allowed
+    return False  # <--- Denied
 
 
 SimpleLogin(app, login_checker=only_chuck_norris_can_login)
@@ -131,15 +136,32 @@ if is_logged_in('admin'):
 ```
 
 
-## Decorating your views
+## Protecting your views
 
 ```python
 from flask_simplelogin import login_required
 
 @app.route('/it_is_protected')
-@login_required   # < --- simple decorator
+@login_required  # < --- simple decorator
 def foo():
     return 'secret'
+
+@app.route('/only_mary_can_access')
+@login_required(username='mary')  # < --- accepts a list of names
+def bar():
+    return "Mary's secret"
+
+@app.route('/api', methods=['POST'])
+@login_required(basic=True)  # < --- Basic HTTP Auth for API
+def api():
+    # curl -XPOST localhost:5000/api -H "Authorization: Basic Y2h1Y2s6bm9ycmlz" -H "Content-Type: application/json"
+    # Basic-Auth takes base64 encripted username:password
+    return jsonify(data='You are logged in with basic auth')
+
+class ProtectedView(MethodView):  # < --- Class Based Views
+    decorators = [login_required]
+    def get(self):
+        return "only loged in users can see this"
 ```
 
 ### Protecting Flask Admin views
@@ -193,12 +215,38 @@ And you can customize it in anyway you want and need, it receives a `form` in co
 
 You can also use `{% if is_logged_in %}` in your template if needed.
 
+## Custom validators
+
+Pass `must` argument to `login_required` decorator, it can be a `function` or a list of `functions` if function returns `None` means **No** error and validator passed. if function returns an `"Error message"` means validator did not passed.
+
+```python
+def be_admin(username):
+    """Validator to check if user has admin role"""
+    user_data = my_users.get(username)
+    if not user_data or 'admin' not in user_data.get('roles', []):
+        return "User does not have admin role"
+
+
+def have_approval(username):
+    """Validator: all users approved so return None"""
+    return
+
+
+@app.route('/protected')
+@login_required(must=[be_admin, have_approval])
+def protected():
+    return render_template('secret.html')
+
+```
+
+> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/app.py).
 
 ## Requirements
 
 - Flask-WTF and WTForms
-- having a `SECRET_KEY` set in your `app.config`
+- `SECRET_KEY` set in your `app.config`
 
+## Integrations
 
 ### Do you need Access Control? you can easily mix `flask_simplelogin` with `flask_allows`
 
@@ -240,6 +288,6 @@ def a_view():
 
 ```
 
-### Looking for a solution to authenticate API calls?
+### Need JSON Web Token (JWT)?
 
 Take a look at [Flask-JWT-Simple](https://github.com/vimalloc/flask-jwt-simple) and of course you can mix SimpleLogin + JWT Simple

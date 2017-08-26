@@ -12,11 +12,12 @@
 {% endblock %}
 
 {% block page_body %}
-       <form action="{{ url_for('simplelogin.login', next=request.args.get('next', '/')) }}" method="post">
+       <form action="{{ url_for('simplelogin.login') }}" method="post">
             <div class="form-group">
             {{ form.csrf_token }}
             {{form.username.label}}<div class="form-control">{{ form.username }}</div><br>
             {{form.password.label}}<div class="form-control"> {{ form.password }}</div><br>
+            {% if next %}<input type="hidden" name="next" value="{{next}}">{% endif %}
             </form>
            <input type="submit" value="Send">
        </form>

@@ -8,12 +8,16 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-      <ul class="flashes alert alert-primary">
-      {% for message in messages %}
-        <li>{{ message }}</li>
+      <ul class="flashes alert">
+      {% for category, message in messages %}
+        <li class="flashes alert alert-{{category}}">{{ message }}</li>
       {% endfor %}
+      </ul>
+    {% else %}
+      <ul class="flashes alert alert-primary">
+        <li>Please provide username and password to login</li>
       </ul>
     {% endif %}
     {% endwith %}
@@ -26,11 +30,12 @@
     </ul>
     {% endif %}
 
-    <form action="{{ url_for('simplelogin.login', next=request.args.get('next', '/')) }}" method="post">
+    <form action="{{ url_for('simplelogin.login') }}" method="post">
       <div class="form-group">
       {{ form.csrf_token }}
       {{form.username.label}}<div class="form-control">{{ form.username }}</div><br>
       {{form.password.label}}<div class="form-control"> {{ form.password }}</div><br>
+      {% if next %}<input type="hidden" name="next" value="{{next}}">{% endif %}
       </form>
      <input type="submit" value="Send">
     </form>
