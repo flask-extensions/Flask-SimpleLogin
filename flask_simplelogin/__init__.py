@@ -1,5 +1,5 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 
 import logging
 import os

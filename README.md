@@ -1,8 +1,8 @@
 [![Travis](https://img.shields.io/travis/rochacbruno/flask_simplelogin.svg?style=flat-square)](https://travis-ci.org/rochacbruno/flask_simplelogin)
 [![PyPI](https://img.shields.io/pypi/v/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
-[![PyPI](https://img.shields.io/pypi/pyversions/flask_simplelogin.svg?style=flat-square)]()
-[![PyPI](https://img.shields.io/pypi/format/flask_simplelogin.svg?style=flat-square)]()
-[![Flask](https://img.shields.io/badge/Flask-Extension-blue.svg?style=flat-square)]()
+[![PyPI versions](https://img.shields.io/pypi/pyversions/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
+[![PyPI formats](https://img.shields.io/pypi/format/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
+[![Flask](https://img.shields.io/badge/Flask-Extension-blue.svg?style=flat-square)](https://github.com/pallets/flask)
 
 # Login Extension for Flask
 
