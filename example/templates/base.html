@@ -28,6 +28,10 @@
           </li>
 
           <li class="nav-item">
+                <a class="nav-link" href="{{url_for('complexview')}}">Validated</a>
+          </li>
+
+          <li class="nav-item">
             {% if is_logged_in() %}
                 <span class="nav-link">{{ get_username() }}
                 <a  href="{{url_for('simplelogin.logout')}}"> Logout</a></span>
@@ -43,17 +47,23 @@
 
 <div class="jumbotron">
     <div class="container">
-       {% block messages %}
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-              <ul class="flashes alert alert-primary">
-              {% for message in messages %}
-                <li>{{ message }}</li>
-              {% endfor %}
-              </ul>
-            {% endif %}
-            {% endwith %}
-        {% endblock %}
+    {% block messages %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flashes alert">
+          {% for category, message in messages %}
+            <li class="flashes alert alert-{{category}}">{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          {% if request.path == url_for('simplelogin.login') %}
+          <ul class="flashes alert alert-primary">
+            <li>Please provide username and password to login</li>
+          </ul>
+          {% endif %}
+        {% endif %}
+        {% endwith %}
+    {% endblock %}
     </div>
 </div>
 

@@ -1,28 +1,32 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
+import logging
 import os
 from functools import wraps
-from flask import (
-    Blueprint, render_template, session,
-    request, redirect, flash, url_for, current_app
-)
+from uuid import uuid4
+
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request, session, url_for)
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired
+
+logger = logging.getLogger(__name__)
 
 
 class LoginForm(FlaskForm):
+    "Default login form"
     username = StringField('name', validators=[DataRequired()])
-    password = PasswordField('message', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
 
 
 def default_login_checker(user):
     """user must be a dictionary here default is
     checking username/password
     if login is ok returns True else False
-    In real implementation this function goes to database
-    and checks login credentials.
+
+    :param user: dict {'username':'', 'password': ''}
     """
     username = user.get('username')
     password = user.get('password')
@@ -40,24 +44,85 @@ def default_login_checker(user):
 
 
 def is_logged_in(username=None):
+    """Checks if user is logged in if `username`
+    is passed check if specified user is logged in
+    username can be a list"""
     if username:
-        return 'simple_logged_in' in session and get_username() == username
+        if not isinstance(username, (list, tuple)):
+            username = [username]
+        return 'simple_logged_in' in session and get_username() in username
     return 'simple_logged_in' in session
 
 
 def get_username():
+    """Get current logged in username"""
     return session.get('simple_username')
 
 
-def login_required(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'simple_logged_in' in session:
-            return f(*args, **kwargs)
+def login_required(function=None, username=None, basic=False, must=None):
+    """Decorate views to require login
+    @login_required
+    @login_required()
+    @login_required(username='admin')
+    @login_required(username=['admin', 'jon'])
+    @login_required(basic=True)
+    @login_required(must=[function, another_function])
+    """
+
+    if function and not callable(function):
+        raise ValueError(
+            'Decorator receives only named arguments, '
+            'try login_required(username="foo")'
+        )
+
+    def check(validators):
+        """Return in the first validation error, else return None"""
+        if validators is None:
+            return
+        if not isinstance(validators, (list, tuple)):
+            validators = [validators]
+        for validator in validators:
+            error = validator(get_username())
+            if error is not None:
+                return 'Authentication Error: {0}'.format(error), 403
+
+    def dispatch(fun, *args, **kwargs):
+        if basic and request.is_json:
+            return dispatch_basic_auth(fun, *args, **kwargs)
+
+        if is_logged_in(username=username):
+            return check(must) or fun(*args, **kwargs)
+        elif is_logged_in():
+            return 'Access Denied', 403
         else:
-            flash("You need to login first")
-            return redirect(url_for('simplelogin.login', next=request.path))
-    return wrap
+            flash("You need to login first", 'danger')
+            return redirect(
+                url_for('simplelogin.login', next=request.path)
+            )
+
+    def dispatch_basic_auth(fun, *args, **kwargs):
+        simplelogin = current_app.extensions['simplelogin']
+        auth_response = simplelogin.basic_auth()
+        if auth_response is True:
+            return check(must) or fun(*args, **kwargs)
+        else:
+            return auth_response
+
+    @wraps(function)
+    def simple_decorator(*args, **kwargs):
+        """This is for when decorator is @login_required"""
+        return dispatch(function, *args, **kwargs)
+
+    if function:
+        return simple_decorator
+
+    def decorator(f):
+        """This is for when decorator is @login_required(...)"""
+        @wraps(f)
+        def wrap(*args, **kwargs):
+            return dispatch(f, *args, **kwargs)
+        return wrap
+    return decorator
 
 
 class SimpleLogin(object):
@@ -71,14 +136,24 @@ class SimpleLogin(object):
             'home_url': '/'
         }
         self.app = None
-        self.login_checker = None
+        self._login_checker = None
         if app is not None:
             self.init_app(app=app, login_checker=login_checker)
 
+    def login_checker(self, f):
+        """To set login_checker as decorator:
+            @simple.login_checher
+            def foo(user): ...
+        """
+        self._login_checker = f
+        return f
+
     def init_app(self, app, login_checker=None):
-        self.login_checker = login_checker or default_login_checker
+        if not self._login_checker:
+            self._login_checker = login_checker or default_login_checker
         self._register(app)
         self._load_config()
+        self._set_default_secret()
         self._register_views()
         self._register_extras()
 
@@ -100,6 +175,15 @@ class SimpleLogin(object):
                 trim_namespace=True
             )
         )
+
+    def _set_default_secret(self):
+        if self.app.config.get('SECRET_KEY') is None:
+            secret_key = str(uuid4())
+            logger.warning((
+                'Using random SECRET_KEY: {0}, '
+                'please set it on your app.config["SECRET_KEY"]'
+            ).format(secret_key))
+            self.app.config['SECRET_KEY'] = secret_key
 
     def _register_views(self):
         self.blueprint = Blueprint(
@@ -128,28 +212,50 @@ class SimpleLogin(object):
         self.app.add_template_global(is_logged_in)
         self.app.add_template_global(get_username)
 
+    def basic_auth(self, response=None):
+        """Support basic_auth via /login or login_required(basic=True)"""
+        auth = request.authorization
+        if auth and self._login_checker({'username': auth.username,
+                                         'password': auth.password}):
+            session['simple_logged_in'] = True
+            session['simple_basic_auth'] = True
+            session['simple_username'] = auth.username
+            return response or True
+        else:
+            headers = {'WWW-Authenticate': 'Basic realm="Login Required"'}
+            return 'Invalid credentials', 401, headers
+
     def login(self):
         destiny = request.args.get(
-            'next', default=self.config.get('home_url', '/')
+            'next',
+            default=request.form.get(
+                'next',
+                default=self.config.get('home_url', '/')
+            )
         )
+
         if is_logged_in():
-            flash('already logged in')
+            flash('already logged in', 'primary')
             return redirect(destiny)
 
+        if request.is_json:
+            # recommended to use `login_required(basic=True)` instead this
+            return self.basic_auth(destiny=redirect(destiny))
+
         form = LoginForm()
+        ret_code = 200
         if form.validate_on_submit():
-            if self.login_checker(form.data):
-                flash("login success!!")
+            if self._login_checker(form.data):
+                flash("login success!!", 'success')
                 session['simple_logged_in'] = True
                 session['simple_username'] = form.data.get('username')
                 return redirect(destiny)
             else:
-                flash('invalid credentials')
-                return redirect(url_for('simplelogin.login', next=destiny))
-                # return render_template('login.html', form=form), 400
-        return render_template('login.html', form=form)
+                flash('invalid credentials', 'danger')
+                ret_code = 401  # <-- invalid credentials RFC7235
+        return render_template('login.html', form=form, next=destiny), ret_code
 
     def logout(self):
         session.clear()
-        flash('Logged out!')
+        flash('Logged out!', 'primary')
         return redirect(self.config.get('home_url', '/'))
