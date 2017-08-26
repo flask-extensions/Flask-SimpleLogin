@@ -128,7 +128,7 @@ def login_required(function=None, username=None, basic=False, must=None):
 class SimpleLogin(object):
     """Simple Flask Login"""
 
-    def __init__(self, app=None, login_checker=None):
+    def __init__(self, app=None, login_checker=None, login_form=None):
         self.config = {
             'blueprint': 'simplelogin',
             'login_url': '/login/',
@@ -136,9 +136,12 @@ class SimpleLogin(object):
             'home_url': '/'
         }
         self.app = None
-        self._login_checker = None
+        self._login_checker = login_checker or default_login_checker
+        self._login_form = login_form or LoginForm
         if app is not None:
-            self.init_app(app=app, login_checker=login_checker)
+            self.init_app(
+                app=app, login_checker=login_checker, login_form=login_form
+            )
 
     def login_checker(self, f):
         """To set login_checker as decorator:
@@ -148,9 +151,13 @@ class SimpleLogin(object):
         self._login_checker = f
         return f
 
-    def init_app(self, app, login_checker=None):
-        if not self._login_checker:
-            self._login_checker = login_checker or default_login_checker
+    def init_app(self, app, login_checker=None, login_form=None):
+        if login_checker:
+            self._login_checker = login_checker
+
+        if login_form:
+            self._login_form = login_form
+
         self._register(app)
         self._load_config()
         self._set_default_secret()
@@ -242,7 +249,7 @@ class SimpleLogin(object):
             # recommended to use `login_required(basic=True)` instead this
             return self.basic_auth(destiny=redirect(destiny))
 
-        form = LoginForm()
+        form = self._login_form()
         ret_code = 200
         if form.validate_on_submit():
             if self._login_checker(form.data):
