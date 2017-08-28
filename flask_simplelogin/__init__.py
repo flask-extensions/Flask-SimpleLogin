@@ -128,6 +128,13 @@ def login_required(function=None, username=None, basic=False, must=None):
 class SimpleLogin(object):
     """Simple Flask Login"""
 
+    messages = {
+        'login_success': 'login success!!',
+        'login_failure': 'invalid credentials',
+        'is_logged_in': 'already logged in',
+        'logout': 'Logged out!'
+    }
+
     def __init__(self, app=None, login_checker=None, login_form=None):
         self.config = {
             'blueprint': 'simplelogin',
@@ -242,7 +249,7 @@ class SimpleLogin(object):
         )
 
         if is_logged_in():
-            flash('already logged in', 'primary')
+            flash(self.messages['is_logged_in'], 'primary')
             return redirect(destiny)
 
         if request.is_json:
@@ -253,16 +260,16 @@ class SimpleLogin(object):
         ret_code = 200
         if form.validate_on_submit():
             if self._login_checker(form.data):
-                flash("login success!!", 'success')
+                flash(self.messages['login_success'], 'success')
                 session['simple_logged_in'] = True
                 session['simple_username'] = form.data.get('username')
                 return redirect(destiny)
             else:
-                flash('invalid credentials', 'danger')
+                flash(self.messages['login_failure'], 'danger')
                 ret_code = 401  # <-- invalid credentials RFC7235
         return render_template('login.html', form=form, next=destiny), ret_code
 
     def logout(self):
         session.clear()
-        flash('Logged out!', 'primary')
+        flash(self.messages['logout'], 'primary')
         return redirect(self.config.get('home_url', '/'))
