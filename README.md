@@ -215,6 +215,19 @@ And you can customize it in anyway you want and need, it receives a `form` in co
 
 You can also use `{% if is_logged_in %}` in your template if needed.
 
+## Customizing message alerts
+
+```python
+app = Flask(__name__)
+messages = {
+    'login_success': 'Great You are in!!',
+    'login_failure': 'Credenciais inválidas :(',
+    'is_logged_in': 'You dont need to login again!',
+    'logout': 'Bye Bye!'
+}
+SimpleLogin(app, messages=messages)
+```
+
 ## Custom validators
 
 Pass `must` argument to `login_required` decorator, it can be a `function` or a list of `functions` if function returns `None` means **No** error and validator passed. if function returns an `"Error message"` means validator did not passed.

@@ -1,5 +1,5 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 import logging
 import os
@@ -135,7 +135,8 @@ class SimpleLogin(object):
         'logout': 'Logged out!'
     }
 
-    def __init__(self, app=None, login_checker=None, login_form=None):
+    def __init__(self, app=None, login_checker=None,
+                 login_form=None, messages=None):
         self.config = {
             'blueprint': 'simplelogin',
             'login_url': '/login/',
@@ -147,7 +148,8 @@ class SimpleLogin(object):
         self._login_form = login_form or LoginForm
         if app is not None:
             self.init_app(
-                app=app, login_checker=login_checker, login_form=login_form
+                app=app, login_checker=login_checker,
+                login_form=login_form, messages=messages
             )
 
     def login_checker(self, f):
@@ -158,12 +160,16 @@ class SimpleLogin(object):
         self._login_checker = f
         return f
 
-    def init_app(self, app, login_checker=None, login_form=None):
+    def init_app(self, app, login_checker=None,
+                 login_form=None, messages=None):
         if login_checker:
             self._login_checker = login_checker
 
         if login_form:
             self._login_form = login_form
+
+        if messages and isinstance(messages, dict):
+            self.messages.update(messages)
 
         self._register(app)
         self._load_config()
