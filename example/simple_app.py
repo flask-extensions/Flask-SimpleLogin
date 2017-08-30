@@ -11,7 +11,10 @@ my_users = {
 
 
 def check_my_users(user):
-    """Check if user exists and its credentials."""
+    """Check if user exists and its credentials.
+    Take a look at encrypt_app.py and encrypt_cli.py
+     to see how to encrypt passwords
+    """
     user_data = my_users.get(user['username'])
     if not user_data:
         return False  # <--- invalid credentials

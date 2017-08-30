@@ -122,6 +122,14 @@ def only_chuck_norris_can_login(user):
 SimpleLogin(app, login_checker=only_chuck_norris_can_login)
 ```
 
+### Encrypt passwords
+
+You can use the `from werkzeug.security import check_password_hash, generate_password_hash`
+utilities to encrypt passwords.
+
+A working example is available in `manage.py` of [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/)
+
+
 ## Checking if user is logged in
 
 ```python
@@ -209,7 +217,7 @@ Example is:
 {% endblock %}
 ```
 
-> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/app.py).
+> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/).
 
 And you can customize it in anyway you want and need, it receives a `form` in context and it is a `WTF form` the submit should be done to `request.path` which is the same `/login` view.
 
@@ -252,7 +260,7 @@ def protected():
 
 ```
 
-> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/app.py).
+> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/).
 
 ## Requirements
 
