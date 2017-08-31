@@ -6,18 +6,19 @@
 
 # Login Extension for Flask
 
-There are good and recommended options to deal with web authentication & authorization
+There are other good and recommended options to deal with web authentication & authorization
 in Flask.
 
 **I recommend you to use:**
 
 - [Flask-Login](https://flask-login.readthedocs.io)
+- [Flask-User](https://github.com/lingthio/Flask-User)
 - [Flask-Security](https://pythonhosted.org/Flask-Security/)
 - [Flask-Principal](https://pythonhosted.org/Flask-Principal/)
 
 Those extensions are really complete and **production ready**!
 
-> So why **Flask Simple Login**?
+## So why **Flask Simple Login**?
 
 However sometimes you need something **simple** for that small project or for
 prototyping.
@@ -39,7 +40,7 @@ What it does not provide:
 - ~~API authentication with Token or JWT~~
 - ~~Role or user based access control~~
 
-> of course you can easily implement all above by your own.
+> of course you can easily implement all above by your own. Take a look at [example](/example).
 
 ## Hot it works
 
