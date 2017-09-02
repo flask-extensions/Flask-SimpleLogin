@@ -95,7 +95,7 @@ def login_required(function=None, username=None, basic=False, must=None):
         elif is_logged_in():
             return 'Access Denied', 403
         else:
-            flash("You need to login first", 'danger')
+            flash("You need to login first", 'warning')
             return redirect(
                 url_for('simplelogin.login', next=request.path)
             )
