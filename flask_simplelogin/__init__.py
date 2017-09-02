@@ -1,5 +1,5 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.4'
+__version__ = '0.0.5'
 
 import logging
 import os
@@ -84,7 +84,7 @@ def login_required(function=None, username=None, basic=False, must=None):
         for validator in validators:
             error = validator(get_username())
             if error is not None:
-                return 'Authentication Error: {0}'.format(error), 403
+                return SimpleLogin.get_message('auth_error', error), 403
 
     def dispatch(fun, *args, **kwargs):
         if basic and request.is_json:
@@ -93,12 +93,10 @@ def login_required(function=None, username=None, basic=False, must=None):
         if is_logged_in(username=username):
             return check(must) or fun(*args, **kwargs)
         elif is_logged_in():
-            return 'Access Denied', 403
+            return SimpleLogin.get_message('access_denied'), 403
         else:
-            flash("You need to login first", 'warning')
-            return redirect(
-                url_for('simplelogin.login', next=request.path)
-            )
+            flash(SimpleLogin.get_message('login_required'), 'warning')
+            return redirect(url_for('simplelogin.login', next=request.path))
 
     def dispatch_basic_auth(fun, *args, **kwargs):
         simplelogin = current_app.extensions['simplelogin']
@@ -132,8 +130,19 @@ class SimpleLogin(object):
         'login_success': 'login success!!',
         'login_failure': 'invalid credentials',
         'is_logged_in': 'already logged in',
-        'logout': 'Logged out!'
+        'logout': 'Logged out!',
+        'login_required': 'You need to login first',
+        'access_denied': 'Access Denied',
+        'auth_error': 'Authentication Error: {0}'
     }
+
+    @staticmethod
+    def get_message(message, *args, **kwargs):
+        """Helper to get internal messages outside this instance"""
+        msg = current_app.extensions['simplelogin'].messages.get(message)
+        if msg and (args or kwargs):
+            return msg.format(*args, **kwargs)
+        return msg
 
     def __init__(self, app=None, login_checker=None,
                  login_form=None, messages=None):
