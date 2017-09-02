@@ -224,15 +224,34 @@ And you can customize it in anyway you want and need, it receives a `form` in co
 
 You can also use `{% if is_logged_in %}` in your template if needed.
 
-## Customizing message alerts
+## Customizing or translating message alerts
+
+The default message alerts are:
+
+| key            | message                   |
+|----------------|---------------------------|
+| login_success  | login success!            |
+| login_failure  | invalid credentials       |
+| is_logged_in   | already logged in         |
+| logout         | Logged out!               |
+| login_required | You need to login first   |
+| access_denied  | Access Denied             |
+| auth_error     | Authentication Error: {0} |
+
+> NOTE: the `{0}` in `auth_error` is a required placeholder to pass in the validator error message.
+
+And you can customize by passing a dictionary:
 
 ```python
 app = Flask(__name__)
 messages = {
-    'login_success': 'Great You are in!!',
-    'login_failure': 'Credenciais inválidas :(',
-    'is_logged_in': 'You dont need to login again!',
-    'logout': 'Bye Bye!'
+    'login_success': 'Você está dentro!',
+    'login_failure': 'ungültige Anmeldeinformationen',
+    'is_logged_in': 'Iam initium',
+    'logout': 'Déconnecté!',
+    'login_required': 'Devi prima accedere',
+    'access_denied': 'Acceso denegado',
+    'auth_error': '授權錯誤： {0}'
 }
 SimpleLogin(app, messages=messages)
 ```

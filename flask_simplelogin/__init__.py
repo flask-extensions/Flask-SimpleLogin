@@ -127,7 +127,7 @@ class SimpleLogin(object):
     """Simple Flask Login"""
 
     messages = {
-        'login_success': 'login success!!',
+        'login_success': 'login success!',
         'login_failure': 'invalid credentials',
         'is_logged_in': 'already logged in',
         'logout': 'Logged out!',
