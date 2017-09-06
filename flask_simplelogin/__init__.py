@@ -1,5 +1,8 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.5'
+__version__ = '0.0.6'
+__author__ = 'Bruno Rocha'
+__email__ = 'rochacbruno@gmail.com'
+
 
 import logging
 import os
@@ -106,12 +109,11 @@ def login_required(function=None, username=None, basic=False, must=None):
         else:
             return auth_response
 
-    @wraps(function)
-    def simple_decorator(*args, **kwargs):
-        """This is for when decorator is @login_required"""
-        return dispatch(function, *args, **kwargs)
-
     if function:
+        @wraps(function)
+        def simple_decorator(*args, **kwargs):
+            """This is for when decorator is @login_required"""
+            return dispatch(function, *args, **kwargs)
         return simple_decorator
 
     def decorator(f):

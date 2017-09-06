@@ -1,11 +1,12 @@
 language: python
 python:
+  - "2.7"
   - "3.6"
 install:
-  - "pip install flit"
+  - "python setup.py install"
+  - "pip install flask_wtf"
   - "pip install pytest-flask"
   - "pip install flake8"
-  - "flit install --symlink"
 script:
   - "flake8 flask_simplelogin/"
   - "flake8 example/"
