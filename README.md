@@ -222,7 +222,7 @@ Example is:
 
 And you can customize it in anyway you want and need, it receives a `form` in context and it is a `WTF form` the submit should be done to `request.path` which is the same `/login` view.
 
-You can also use `{% if is_logged_in %}` in your template if needed.
+You can also use `{% if is_logged_in() %}` in your template if needed.
 
 ## Customizing or translating message alerts
 
