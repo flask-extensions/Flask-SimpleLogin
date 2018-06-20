@@ -42,7 +42,7 @@ What it does not provide:
 
 > of course you can easily implement all above by your own. Take a look at [example](/example).
 
-## Hot it works
+## How it works
 
 First install it from [PyPI](https://pypi.org/project/flask_simplelogin/).
 
