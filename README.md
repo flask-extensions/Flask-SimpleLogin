@@ -6,21 +6,17 @@
 
 # Login Extension for Flask
 
-There are other good and recommended options to deal with web authentication & authorization
-in Flask.
+The simplest way to add login to flask!
 
-**I recommend you to use:**
+## Top Contributors
 
-- [Flask-Login](https://flask-login.readthedocs.io)
-- [Flask-User](https://github.com/lingthio/Flask-User)
-- [Flask-Security](https://pythonhosted.org/Flask-Security/)
-- [Flask-Principal](https://pythonhosted.org/Flask-Principal/)
+[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/0)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/0)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/1)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/1)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/2)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/2)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/3)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/3)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/4)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/4)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/5)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/5)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/6)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/6)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/7)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/7)
 
-Those extensions are really complete and **production ready**!
+Add yourself, send a PR!
 
 ## So why **Flask Simple Login**?
 
-However sometimes you need something **simple** for that small project or for
+Sometimes you need something **simple** for that small project or for
 prototyping.
 
 ## Flask Simple Login
@@ -332,3 +328,12 @@ def a_view():
 ### Need JSON Web Token (JWT)?
 
 Take a look at [Flask-JWT-Simple](https://github.com/vimalloc/flask-jwt-simple) and of course you can mix SimpleLogin + JWT Simple
+
+**Alternatives:**
+
+- [Flask-Login](https://flask-login.readthedocs.io)
+- [Flask-User](https://github.com/lingthio/Flask-User)
+- [Flask-Security](https://pythonhosted.org/Flask-Security/)
+- [Flask-Principal](https://pythonhosted.org/Flask-Principal/)
+
+Those extensions are really complete and **production ready**!
