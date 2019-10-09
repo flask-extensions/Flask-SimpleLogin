@@ -13,7 +13,10 @@ def fpath(name):
 
 
 def read(fname):
-    return open(fpath(fname)).read()
+    try:
+        return open(fpath(fname), encoding='utf8').read()
+    except TypeError:  # Python 2's open doesn't have the encoding kwarg
+        return open(fpath(fname)).read()
 
 
 def desc():
