@@ -8,6 +8,7 @@ import logging
 import os
 from functools import wraps
 from uuid import uuid4
+from warnings import warn
 
 from flask import (Blueprint, current_app, flash, redirect, render_template,
                    request, session, url_for)
@@ -201,11 +202,26 @@ class SimpleLogin(object):
     def _load_config(self):
         self.config.update(
             self.app.config.get_namespace(
-                namespace='SIMPLE_LOGIN_',
+                namespace='SIMPLELOGIN_',
                 lowercase=True,
                 trim_namespace=True
             )
         )
+
+        # backwards compatibility
+        old_settings = self.app.config.get_namespace(
+            namespace='SIMPLE_LOGIN_',
+            lowercase=True,
+            trim_namespace=True
+        )
+
+        if old_settings:
+            msg = (
+                "Settings defined as SIMPLE_LOGIN_ will be deprecated. "
+                "Please, use SIMPLELOGIN_ instead."
+            )
+            warn(msg, FutureWarning)
+            self.config.update(old_settings)
 
     def _set_default_secret(self):
         if self.app.config.get('SECRET_KEY') is None:
