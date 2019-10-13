@@ -119,6 +119,24 @@ def only_chuck_norris_can_login(user):
 SimpleLogin(app, login_checker=only_chuck_norris_can_login)
 ```
 
+### Using a custom login, logout or home URL
+
+`SimpleLogin` automaticaly loads Flask configurations prefixed with `SIMPLELOGIN_`, thus to set a custom login, logout or home URL:
+
+
+```python
+from flask import Flask
+from flask_simplelogin import SimpleLogin
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'something-secret'
+app.config['SIMPLELOGIN_LOGIN_URL'] = '/signin/'
+app.config['SIMPLELOGIN_LOGOUT_URL'] = '/exit/'
+app.config['SIMPLELOGIN_HOME_URL'] = '/en/'
+
+SimpleLogin(app)
+```
+
 ### Encrypt passwords
 
 You can use the `from werkzeug.security import check_password_hash, generate_password_hash`
