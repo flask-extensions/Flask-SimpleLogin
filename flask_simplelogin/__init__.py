@@ -200,28 +200,31 @@ class SimpleLogin(object):
         self.app = app
 
     def _load_config(self):
-        self.config.update(
-            self.app.config.get_namespace(
+        config = self.app.config.get_namespace(
                 namespace='SIMPLELOGIN_',
                 lowercase=True,
                 trim_namespace=True
             )
-        )
 
         # backwards compatibility
-        old_settings = self.app.config.get_namespace(
+        old_config = self.app.config.get_namespace(
             namespace='SIMPLE_LOGIN_',
             lowercase=True,
             trim_namespace=True
         )
-
-        if old_settings:
+        config.update(old_config)
+        if old_config:
             msg = (
                 "Settings defined as SIMPLE_LOGIN_ will be deprecated. "
                 "Please, use SIMPLELOGIN_ instead."
             )
             warn(msg, FutureWarning)
-            self.config.update(old_settings)
+            self.config.update(old_config)
+
+        self.config.update(
+            dict((key, value) for key, value in config.items() if value)
+        )
+
 
     def _set_default_secret(self):
         if self.app.config.get('SECRET_KEY') is None:
