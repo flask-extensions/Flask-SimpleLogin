@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/rochacbruno/flask_simplelogin.svg?style=flat-square)](https://travis-ci.org/rochacbruno/flask_simplelogin)
+[![Travis](https://img.shields.io/travis/cuducos/flask_simplelogin.svg?style=flat-square)](https://travis-ci.org/cuducos/flask_simplelogin)
 [![PyPI](https://img.shields.io/pypi/v/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![PyPI versions](https://img.shields.io/pypi/pyversions/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![PyPI formats](https://img.shields.io/pypi/format/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
@@ -10,7 +10,7 @@ The simplest way to add login to flask!
 
 ## Top Contributors
 
-[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/0)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/0)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/1)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/1)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/2)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/2)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/3)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/3)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/4)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/4)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/5)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/5)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/6)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/6)[![](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/images/7)](https://sourcerer.io/fame/rochacbruno/rochacbruno/flask_simplelogin/links/7)
+[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/0)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/0)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/1)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/1)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/2)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/2)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/3)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/3)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/4)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/4)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/5)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/5)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/6)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/6)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/7)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/7)
 
 Add yourself, send a PR!
 
@@ -142,7 +142,7 @@ SimpleLogin(app)
 You can use the `from werkzeug.security import check_password_hash, generate_password_hash`
 utilities to encrypt passwords.
 
-A working example is available in `manage.py` of [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/)
+A working example is available in `manage.py` of [example app](https://github.com/cuducos/flask_simplelogin/blob/master/example/)
 
 
 ## Checking if user is logged in
@@ -232,7 +232,7 @@ Example is:
 {% endblock %}
 ```
 
-> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/).
+> Take a look at the [example app](https://github.com/cuducos/flask_simplelogin/blob/master/example/).
 
 And you can customize it in anyway you want and need, it receives a `form` in context and it is a `WTF form` the submit should be done to `request.path` which is the same `/login` view.
 
@@ -294,7 +294,7 @@ def protected():
 
 ```
 
-> Take a look at the [example app](https://github.com/rochacbruno/flask_simplelogin/blob/master/example/).
+> Take a look at the [example app](https://github.com/cuducos/flask_simplelogin/blob/master/example/).
 
 ## Requirements
 
