@@ -13,7 +13,10 @@ def fpath(name):
 
 
 def read(fname):
-    return open(fpath(fname)).read()
+    try:
+        return open(fpath(fname), encoding='utf8').read()
+    except TypeError:  # Python 2's open doesn't have the encoding kwarg
+        return open(fpath(fname)).read()
 
 
 def desc():
@@ -34,7 +37,7 @@ def grep(attrname):
 setup(
     name='flask_simplelogin',
     version=grep('__version__'),
-    url='https://github.com/rochacbruno/flask_simplelogin/',
+    url='https://github.com/cuducos/flask_simplelogin/',
     license='MIT',
     author=grep('__author__'),
     author_email=grep('__email__'),

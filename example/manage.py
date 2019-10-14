@@ -45,7 +45,7 @@ def create_user(**data):
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'secret-here'
+    app.config.from_object('settings')
     return app
 
 

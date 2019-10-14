@@ -1,5 +1,5 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 __author__ = 'Bruno Rocha'
 __email__ = 'rochacbruno@gmail.com'
 
@@ -8,6 +8,7 @@ import logging
 import os
 from functools import wraps
 from uuid import uuid4
+from warnings import warn
 
 from flask import (Blueprint, current_app, flash, redirect, render_template,
                    request, session, url_for)
@@ -199,12 +200,29 @@ class SimpleLogin(object):
         self.app = app
 
     def _load_config(self):
-        self.config.update(
-            self.app.config.get_namespace(
-                namespace='SIMPLE_LOGIN_',
+        config = self.app.config.get_namespace(
+                namespace='SIMPLELOGIN_',
                 lowercase=True,
                 trim_namespace=True
             )
+
+        # backwards compatibility
+        old_config = self.app.config.get_namespace(
+            namespace='SIMPLE_LOGIN_',
+            lowercase=True,
+            trim_namespace=True
+        )
+        config.update(old_config)
+        if old_config:
+            msg = (
+                "Settings defined as SIMPLE_LOGIN_ will be deprecated. "
+                "Please, use SIMPLELOGIN_ instead."
+            )
+            warn(msg, FutureWarning)
+            self.config.update(old_config)
+
+        self.config.update(
+            dict((key, value) for key, value in config.items() if value)
         )
 
     def _set_default_secret(self):

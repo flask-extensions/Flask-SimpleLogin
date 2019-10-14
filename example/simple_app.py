@@ -25,7 +25,7 @@ def check_my_users(user):
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret-here'
+app.config.from_object('settings')
 
 SimpleLogin(app, login_checker=check_my_users)
 
