@@ -1,5 +1,5 @@
 """Flask Simple Login - Login Extension for Flask"""
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 __author__ = 'Bruno Rocha'
 __email__ = 'rochacbruno@gmail.com'
 
