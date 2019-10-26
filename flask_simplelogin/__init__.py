@@ -142,7 +142,7 @@ class SimpleLogin(object):
         'logout': Message('Logged out!','primary'),
         'login_required': Message('You need to login first','warning'),
         'access_denied': 'Access Denied',
-        'auth_error': 'Authentication Error: {0}',
+        'auth_error': 'Authentication Error: {0}'
     }
 
     @staticmethod

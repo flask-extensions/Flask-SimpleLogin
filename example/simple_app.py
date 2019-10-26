@@ -1,5 +1,10 @@
 from flask import Flask, jsonify, render_template
 from flask.views import MethodView
+
+from collections import namedtuple
+
+import sys
+sys.path.append(".")
 from flask_simplelogin import SimpleLogin, get_username, login_required
 
 my_users = {
@@ -8,7 +13,16 @@ my_users = {
     'mary': {'password': 'jane', 'roles': []},
     'steven': {'password': 'wilson', 'roles': ['admin']}
 }
-
+Message=namedtuple("Message", "message category")
+messages = {
+    'login_success': Message('login success!', 'danger'),
+    'login_failure': Message('invalid credentials','success'),
+    'is_logged_in': Message('already logged in','primary'),
+    'logout': Message('Logged out!','primary'),
+    'login_required': Message('You need to login first','success'),
+    'access_denied': 'Access Denied',
+    'auth_error': 'Authentication Error: {0}',
+}
 
 def check_my_users(user):
     """Check if user exists and its credentials.
@@ -27,8 +41,7 @@ def check_my_users(user):
 app = Flask(__name__)
 app.config.from_object('settings')
 
-SimpleLogin(app, login_checker=check_my_users)
-
+SimpleLogin(app, login_checker=check_my_users, messages=messages)
 
 @app.route('/')
 def index():
