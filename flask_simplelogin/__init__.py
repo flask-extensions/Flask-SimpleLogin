@@ -133,14 +133,14 @@ def login_required(function=None, username=None, basic=False, must=None):
 class SimpleLogin(object):
     """Simple Flask Login"""
 
-    Message=namedtuple("Message", "message category")
+    Message = namedtuple("Message", "message category")
 
     messages = {
         'login_success': Message('login success!', 'success'),
-        'login_failure': Message('invalid credentials','danger'),
-        'is_logged_in': Message('already logged in','primary'),
-        'logout': Message('Logged out!','primary'),
-        'login_required': Message('You need to login first','warning'),
+        'login_failure': Message('invalid credentials', 'danger'),
+        'is_logged_in': Message('already logged in', 'primary'),
+        'logout': Message('Logged out!', 'primary'),
+        'login_required': Message('You need to login first', 'warning'),
         'access_denied': 'Access Denied',
         'auth_error': 'Authentication Error: {0}'
     }
@@ -185,14 +185,14 @@ class SimpleLogin(object):
 
         if login_form:
             self._login_form = login_form
-        
-        # If the user is passing a new dictionary 
+
+        # If the user is passing a new dictionary
         if messages and isinstance(messages, dict):
             self.messages.update(messages)
         # If the user is disabling messages
-        # Must differentiate between None and False. 
+        # Must differentiate between None and False.
         elif messages is False:
-            self.messages=False
+            self.messages = False
         self._register(app)
         self._load_config()
         self._set_default_secret()
@@ -211,10 +211,10 @@ class SimpleLogin(object):
 
     def _load_config(self):
         config = self.app.config.get_namespace(
-                namespace='SIMPLELOGIN_',
-                lowercase=True,
-                trim_namespace=True
-            )
+            namespace='SIMPLELOGIN_',
+            lowercase=True,
+            trim_namespace=True
+        )
 
         # backwards compatibility
         old_config = self.app.config.get_namespace(
