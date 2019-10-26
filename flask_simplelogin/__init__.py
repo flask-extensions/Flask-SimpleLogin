@@ -16,6 +16,8 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired
 
+from collections import namedtuple
+
 logger = logging.getLogger(__name__)
 
 
@@ -99,7 +101,9 @@ def login_required(function=None, username=None, basic=False, must=None):
         elif is_logged_in():
             return SimpleLogin.get_message('access_denied'), 403
         else:
-            flash(SimpleLogin.get_message('login_required'), 'warning')
+            if SimpleLogin.messages:
+                message, category = SimpleLogin.get_message('login_required')
+                flash(message, category)
             return redirect(url_for('simplelogin.login', next=request.path))
 
     def dispatch_basic_auth(fun, *args, **kwargs):
@@ -129,14 +133,16 @@ def login_required(function=None, username=None, basic=False, must=None):
 class SimpleLogin(object):
     """Simple Flask Login"""
 
+    Message=namedtuple("Message", "message category")
+
     messages = {
-        'login_success': 'login success!',
-        'login_failure': 'invalid credentials',
-        'is_logged_in': 'already logged in',
-        'logout': 'Logged out!',
-        'login_required': 'You need to login first',
+        'login_success': Message('login success!', 'success'),
+        'login_failure': Message('invalid credentials','danger'),
+        'is_logged_in': Message('already logged in','primary'),
+        'logout': Message('Logged out!','primary'),
+        'login_required': Message('You need to login first','warning'),
         'access_denied': 'Access Denied',
-        'auth_error': 'Authentication Error: {0}'
+        'auth_error': 'Authentication Error: {0}',
     }
 
     @staticmethod
@@ -179,10 +185,14 @@ class SimpleLogin(object):
 
         if login_form:
             self._login_form = login_form
-
+        
+        # If the user is passing a new dictionary 
         if messages and isinstance(messages, dict):
             self.messages.update(messages)
-
+        # If the user is disabling messages
+        # Must differentiate between None and False. 
+        elif messages is False:
+            self.messages=False
         self._register(app)
         self._load_config()
         self._set_default_secret()
@@ -284,7 +294,9 @@ class SimpleLogin(object):
         )
 
         if is_logged_in():
-            flash(self.messages['is_logged_in'], 'primary')
+            if self.messages:
+                message, category = self.messages['is_logged_in']
+                flash(message, category)
             return redirect(destiny)
 
         if request.is_json:
@@ -295,16 +307,22 @@ class SimpleLogin(object):
         ret_code = 200
         if form.validate_on_submit():
             if self._login_checker(form.data):
-                flash(self.messages['login_success'], 'success')
+                if self.messages:
+                    message, category = self.messages['login_success']
+                    flash(message, category)
                 session['simple_logged_in'] = True
                 session['simple_username'] = form.data.get('username')
                 return redirect(destiny)
             else:
-                flash(self.messages['login_failure'], 'danger')
+                if self.messages:
+                    message, category = self.messages['login_failure']
+                    flash(message, category)
                 ret_code = 401  # <-- invalid credentials RFC7235
         return render_template('login.html', form=form, next=destiny), ret_code
 
     def logout(self):
         session.clear()
-        flash(self.messages['logout'], 'primary')
+        if self.messages:
+            message, category = self.messages['logout']
+            flash(message, category)
         return redirect(self.config.get('home_url', '/'))
