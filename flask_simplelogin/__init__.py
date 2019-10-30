@@ -101,9 +101,8 @@ def login_required(function=None, username=None, basic=False, must=None):
         elif is_logged_in():
             return SimpleLogin.get_message('access_denied'), 403
         else:
-            if SimpleLogin.messages:
-                message, category = SimpleLogin.get_message('login_required')
-                flash(message, category)
+            message = SimpleLogin.get_message('login_required')
+            message.flash()
             return redirect(url_for('simplelogin.login', next=request.path))
 
     def dispatch_basic_auth(fun, *args, **kwargs):
@@ -129,13 +128,18 @@ def login_required(function=None, username=None, basic=False, must=None):
         return wrap
     return decorator
 
+
 class Message():
-    def __init__(self, message, category="primary", enabled=True):
-        self.message=message
-        self.category=category
+    def __init__(self, text, category="primary", enabled=True):
+        self.text = text
+        self.category = category
+        self.enabled = True
+
     def flash(self):
-        if self.message:
-            flash(self.message, self.category)
+        if self.text and self.enabled:
+            flash(self.text, self.category)
+
+
 class SimpleLogin(object):
     """Simple Flask Login"""
 
@@ -152,10 +156,13 @@ class SimpleLogin(object):
     @staticmethod
     def get_message(message, *args, **kwargs):
         """Helper to get internal messages outside this instance"""
-        msg = current_app.extensions['simplelogin'].messages.get(message)
-        if msg and (args or kwargs):
-            return msg.format(*args, **kwargs)
-        return msg
+        msg = current_app.extensions['simplelogin'].messages.get(
+            message)
+        if msg.enabled:
+            if msg.text and (args or kwargs):
+                return msg.text.format(*args, **kwargs)
+            return msg.text
+        return
 
     def __init__(self, app=None, login_checker=None,
                  login_form=None, messages=None):
@@ -196,7 +203,13 @@ class SimpleLogin(object):
         # If the user is disabling messages
         # Must differentiate between None and False.
         elif messages is False:
-            self.messages = False
+            
+            # I almost put this in a dict comprehension, but I couldn't figure out how to update value.enabled
+            disabled_messages={}
+            for key, value in self.messages.items():
+                value.enabled=False
+                disabled_messages[key]=value
+            self.messages.update(disabled_messages)
         self._register(app)
         self._load_config()
         self._set_default_secret()
@@ -298,9 +311,8 @@ class SimpleLogin(object):
         )
 
         if is_logged_in():
-            if self.messages:
-                message, category = self.messages['is_logged_in']
-                flash(message, category)
+            message = self.messages['is_logged_in']
+            message.flash()
             return redirect(destiny)
 
         if request.is_json:
@@ -311,22 +323,19 @@ class SimpleLogin(object):
         ret_code = 200
         if form.validate_on_submit():
             if self._login_checker(form.data):
-                if self.messages:
-                    message, category = self.messages['login_success']
-                    flash(message, category)
+                message = self.messages['login_success']
+                message.flash()
                 session['simple_logged_in'] = True
                 session['simple_username'] = form.data.get('username')
                 return redirect(destiny)
             else:
-                if self.messages:
-                    message, category = self.messages['login_failure']
-                    flash(message, category)
+                message = self.messages['login_failure']
+                message.flash()
                 ret_code = 401  # <-- invalid credentials RFC7235
         return render_template('login.html', form=form, next=destiny), ret_code
 
     def logout(self):
         session.clear()
-        if self.messages:
-            message, category = self.messages['logout']
-            flash(message, category)
+        message = self.messages['logout']
+        message.flash()
         return redirect(self.config.get('home_url', '/'))
