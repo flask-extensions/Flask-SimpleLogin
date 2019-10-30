@@ -129,20 +129,24 @@ def login_required(function=None, username=None, basic=False, must=None):
         return wrap
     return decorator
 
-
+class Message():
+    def __init__(self, message, category="primary", enabled=True):
+        self.message=message
+        self.category=category
+    def flash(self):
+        if self.message:
+            flash(self.message, self.category)
 class SimpleLogin(object):
     """Simple Flask Login"""
 
-    Message = namedtuple("Message", "message category")
-
     messages = {
-        'login_success': Message('login success!', 'success'),
-        'login_failure': Message('invalid credentials', 'danger'),
-        'is_logged_in': Message('already logged in', 'primary'),
-        'logout': Message('Logged out!', 'primary'),
-        'login_required': Message('You need to login first', 'warning'),
-        'access_denied': 'Access Denied',
-        'auth_error': 'Authentication Error: {0}'
+        'login_success': Message('login success!', category='success'),
+        'login_failure': Message('invalid credentials', category='danger'),
+        'is_logged_in': Message('already logged in', category='primary'),
+        'logout': Message('Logged out!', category='primary'),
+        'login_required': Message('You need to login first', category='warning'),
+        'access_denied': Message('Access Denied'),
+        'auth_error': Message('Authentication Error: {0}')
     }
 
     @staticmethod
