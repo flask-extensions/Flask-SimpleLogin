@@ -137,10 +137,11 @@ class Message():
     def flash(self):
         if self.text and self.enabled:
             flash(self.text, self.category)
-    
+
     def return_message(self):
         if self.text and self.enabled:
             return self.text
+
 
 class SimpleLogin(object):
     """Simple Flask Login"""
@@ -160,12 +161,12 @@ class SimpleLogin(object):
         """Helper to get internal messages outside this instance"""
         msg = current_app.extensions['simplelogin'].messages.get(
             message)
-        
+
         if args or kwargs:
             msg.text.format(*args, **kwargs)
 
         return msg
-        
+
     def __init__(self, app=None, login_checker=None,
                  login_form=None, messages=None):
         self.config = {
@@ -205,10 +206,10 @@ class SimpleLogin(object):
         # If the user is disabling messages
         # Must differentiate between None and False.
         elif messages is False:
-            disabled_messages={}
+            disabled_messages = {}
             for key, value in self.messages.items():
-                value.enabled=False
-                disabled_messages[key]=value
+                value.enabled = False
+                disabled_messages[key] = value
             self.messages.update(disabled_messages)
         self._register(app)
         self._load_config()
