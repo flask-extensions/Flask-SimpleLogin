@@ -163,7 +163,6 @@ class SimpleLogin(object):
         
         if args or kwargs:
             msg.text.format(*args, **kwargs)
-            return msg
 
         return msg
         
