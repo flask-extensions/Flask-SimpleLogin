@@ -162,7 +162,7 @@ class SimpleLogin(object):
         
         if args or kwargs:
             return msg.text.format(*args, **kwargs)
-            
+
         return msg.text
         
     def __init__(self, app=None, login_checker=None,
@@ -204,8 +204,6 @@ class SimpleLogin(object):
         # If the user is disabling messages
         # Must differentiate between None and False.
         elif messages is False:
-            
-            # I almost put this in a dict comprehension, but I couldn't figure out how to update value.enabled
             disabled_messages={}
             for key, value in self.messages.items():
                 value.enabled=False
