@@ -90,7 +90,7 @@ def login_required(function=None, username=None, basic=False, must=None):
         for validator in validators:
             error = validator(get_username())
             if error is not None:
-                return SimpleLogin.get_message('auth_error', error).text, 403
+                return SimpleLogin.get_message('auth_error', error).return_message(), 403
 
     def dispatch(fun, *args, **kwargs):
         if basic and request.is_json:
@@ -99,7 +99,7 @@ def login_required(function=None, username=None, basic=False, must=None):
         if is_logged_in(username=username):
             return check(must) or fun(*args, **kwargs)
         elif is_logged_in():
-            return SimpleLogin.get_message('access_denied').text, 403
+            return SimpleLogin.get_message('access_denied').return_message(), 403
         else:
             SimpleLogin.get_message('login_required').flash()
             return redirect(url_for('simplelogin.login', next=request.path))
@@ -137,7 +137,10 @@ class Message():
     def flash(self):
         if self.text and self.enabled:
             flash(self.text, self.category)
-
+    
+    def return_message(self):
+        if self.text and self.enabled:
+            return self.text
 
 class SimpleLogin(object):
     """Simple Flask Login"""
@@ -157,9 +160,6 @@ class SimpleLogin(object):
         """Helper to get internal messages outside this instance"""
         msg = current_app.extensions['simplelogin'].messages.get(
             message)
-        
-        if not msg.enabled or not message.text:
-            return
         
         if args or kwargs:
             msg.text.format(*args, **kwargs)
