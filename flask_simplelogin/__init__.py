@@ -157,12 +157,14 @@ class SimpleLogin(object):
         """Helper to get internal messages outside this instance"""
         msg = current_app.extensions['simplelogin'].messages.get(
             message)
-        if msg.enabled:
-            if msg.text and (args or kwargs):
-                return msg.text.format(*args, **kwargs)
-            return msg.text
-        return
-
+        if not msg.enabled or not message.text:
+            return
+        
+        if args or kwargs:
+            return msg.text.format(*args, **kwargs)
+            
+        return msg.text
+        
     def __init__(self, app=None, login_checker=None,
                  login_form=None, messages=None):
         self.config = {
