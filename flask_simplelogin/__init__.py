@@ -101,8 +101,7 @@ def login_required(function=None, username=None, basic=False, must=None):
         elif is_logged_in():
             return SimpleLogin.get_message('access_denied'), 403
         else:
-            message = SimpleLogin.get_message('login_required')
-            message.flash()
+            SimpleLogin.get_message('login_required').flash()
             return redirect(url_for('simplelogin.login', next=request.path))
 
     def dispatch_basic_auth(fun, *args, **kwargs):
@@ -146,8 +145,8 @@ class SimpleLogin(object):
     messages = {
         'login_success': Message('login success!', category='success'),
         'login_failure': Message('invalid credentials', category='danger'),
-        'is_logged_in': Message('already logged in', category='primary'),
-        'logout': Message('Logged out!', category='primary'),
+        'is_logged_in': Message('already logged in'),
+        'logout': Message('Logged out!'),
         'login_required': Message('You need to login first', category='warning'),
         'access_denied': Message('Access Denied'),
         'auth_error': Message('Authentication Error: {0}')
@@ -311,8 +310,7 @@ class SimpleLogin(object):
         )
 
         if is_logged_in():
-            message = self.messages['is_logged_in']
-            message.flash()
+            self.messages['is_logged_in'].flash()
             return redirect(destiny)
 
         if request.is_json:
@@ -323,19 +321,16 @@ class SimpleLogin(object):
         ret_code = 200
         if form.validate_on_submit():
             if self._login_checker(form.data):
-                message = self.messages['login_success']
-                message.flash()
+                self.messages['login_success'].flash()
                 session['simple_logged_in'] = True
                 session['simple_username'] = form.data.get('username')
                 return redirect(destiny)
             else:
-                message = self.messages['login_failure']
-                message.flash()
+                self.messages['login_failure'].flash()
                 ret_code = 401  # <-- invalid credentials RFC7235
         return render_template('login.html', form=form, next=destiny), ret_code
 
     def logout(self):
         session.clear()
-        message = self.messages['logout']
-        message.flash()
+        self.messages['logout'].flash()
         return redirect(self.config.get('home_url', '/'))
