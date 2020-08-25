@@ -129,10 +129,10 @@ def login_required(function=None, username=None, basic=False, must=None):
 
 
 class Message():
-    def __init__(self, text, category="primary", enabled=True):
+    def __init__(self, text="", category="primary", enabled=True):
         self.text = text
         self.category = category
-        self.enabled = True
+        self.enabled = enabled
 
     def flash(self):
         if self.text and self.enabled:
