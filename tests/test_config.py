@@ -69,7 +69,7 @@ def test_messages_customized(app):
     app.config['SECRET_KEY'] = 'secret-here'
     custom_message_dict = {
         'login_success': Message('login_success_custom_message', category='login_success_custom_category'),
-        'logout':Message(enabled=False)
+        'logout': Message(enabled=False)
     }
     sl = SimpleLogin(app, messages=custom_message_dict)
     # Assert that custom messages and categories have been changed.
