@@ -1,8 +1,8 @@
-# Checking
+# Usage
 
 ## Checking if user is logged in
 
-~~~python
+```python
 from flask_simplelogin import is_logged_in
 
 if is_logged_in():
@@ -10,11 +10,11 @@ if is_logged_in():
 
 if is_logged_in('admin'):
     # do things only if admin is logged in
-~~~
+```
 
 ## Protecting your views
 
-~~~python
+```python
 from flask_simplelogin import login_required
 
 @app.route('/it_is_protected')
@@ -38,11 +38,11 @@ class ProtectedView(MethodView):  # < --- Class Based Views
     decorators = [login_required]
     def get(self):
         return "only loged in users can see this"
-~~~
+```
 
 ## Protecting Flask Admin views
 
-~~~python
+```python
 from flask_admin.contrib.foo import ModelView
 from flask_simplelogin import is_logged_in
 
@@ -50,4 +50,4 @@ from flask_simplelogin import is_logged_in
 class AdminView(ModelView)
     def is_accessible(self):
         return is_logged_in('admin')
-~~~
+```

@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Simple Login'
+project = 'Flask Simple Login'
 copyright = '2020, Maely Brandão'
 author = 'Maely Brandão'
 

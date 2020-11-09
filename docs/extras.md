@@ -1,21 +1,16 @@
-# Requirements
+# Extras
 
-- Flask-WTF and WTForms
-- `SECRET_KEY` set in your `app.config`
+## Do you need Access Control?
 
-## Integrations
+You can easily mix Flask Simple Login with[Flask-Allows](https://github.com/justanr/flask-allows):
 
-### Do you need Access Control? You can easily mix flask_simplelogin with flask_allows:
+```console
+$ pip install flask_allows
+```
 
-~~~python
-pip install flask_allows
-~~~
+And then:
 
-learn more: [Flask-Allows](https://github.com/justanr/flask-allows)
-
-Application:
-
-~~~python
+```python
 from flask import Flask, g
 from flask_simplelogin import SimpleLogin
 from flask_allows import Allows
@@ -47,13 +42,13 @@ SimpleLogin(app, login_checker=only_chuck_norris_can_login)
 @login_required
 def a_view():
     return "staff only can see this"
-~~~
+```
 
-### Need JSON Web Token (JWT)?
+## Need JSON Web Token (JWT) support?
 
-Take a look at [Flask-JWT-Simple](https://github.com/vimalloc/flask-jwt-simple) and of course you can mix SimpleLogin + JWT Simple
+Take a look at [Flask-JWT-Simple](https://github.com/vimalloc/flask-jwt-simple) and of course you can mix it with Flask Simple Login.
 
-<b>Alternatives:</b>
+Alternatives:
 
 - [Flask-Login](https://flask-login.readthedocs.io/en/latest/)
 - [Flask-User](https://github.com/lingthio/Flask-User)
