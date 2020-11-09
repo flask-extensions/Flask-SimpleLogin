@@ -3,6 +3,7 @@
 [![PyPI versions](https://img.shields.io/pypi/pyversions/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![PyPI formats](https://img.shields.io/pypi/format/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![Flask](https://img.shields.io/badge/Flask-Extension-blue.svg?style=flat-square)](https://github.com/pallets/flask)
+[![Documentation](https://readthedocs.org/projects/flask-simple-login/badge/?version=latest)](https://flask-simple-login.readthedocs.io/en/latest/?badge=latest)
 
 # Login Extension for Flask
 
@@ -34,16 +35,6 @@ Now you have `/login` and `/logout` routes in your application.
 
 The username defaults to `admin` and the password defaults to `secret` (yeah that's not clever, let's see how to change it)
 
-
 ![Login Screen](/login_screen.png)
 
-## Documentation
-
-To visualize changes on the documentation, it's necessary to install some packages and use Sphinx.
-
-```console
-$ pip install -r docs/requirements.txt
-$ sphinx-build docs docs/build
-```
-
-After that, access: `docs/build/index.html`.
+Check the [documentation](https://flask-simple-login.readthedocs.io/en/latest/?badge=latest) for more details!
