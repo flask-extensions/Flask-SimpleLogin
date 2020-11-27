@@ -167,6 +167,10 @@ class SimpleLogin(object):
 
         return msg
 
+    def disable_messages(self, *args, **kwargs):
+        for i in args:
+            self.messages[i].enabled=False
+
     def __init__(self, app=None, login_checker=None,
                  login_form=None, messages=None):
         self.config = {
