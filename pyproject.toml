@@ -28,12 +28,14 @@ Flask-WTF = "^0.15.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
+pytest-black = "^0.3.12"
 pytest-flake8 = "^1.0.7"
 pytest-flask = "^1.2.0"
 tox = "^3.24.2"
 
 [tool.pytest.ini_options]
-addopts = "--flake8"
+flake8-ignore = ["E501"]
+addopts = "--flake8 --black"
 
 [tool.tox]
 legacy_tox_ini = """
@@ -46,7 +48,9 @@ whitelist_externals = poetry
 commands =
     poetry install -v
     poetry run flake8 example/
+    poetry run black --check example/
     poetry run flake8 tests/
+    poetry run black --check tests/
     poetry run pytest
 """
 
