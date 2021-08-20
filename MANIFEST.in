@@ -1,3 +1,0 @@
-include *.md LICENSE
-recursive-include flask_simplelogin *
-recursive-include flask_simplelogin/templates *

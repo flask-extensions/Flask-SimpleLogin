@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "flask_simplelogin"
+version = "0.0.7"
+description = "Flask Simple Login - Login Extension for Flask"
+authors = ["Bruno Rocha <rochacbruno@users.noreply.github.com>"]
+maintainers = ["Eduardo Cuducos <cuducos@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/flask-extensions/flask_simplelogin"
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Framework :: Flask",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+click = "^8.0.1"
+Flask = ">=0.12"
+Flask-WTF = "^0.15.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+pytest-flake8 = "^1.0.7"
+pytest-flask = "^1.2.0"
+tox = "^3.24.2"
+
+[tool.pytest.ini_options]
+addopts = "--flake8"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+envlist = py39, py38, py37, py36
+
+[testenv]
+whitelist_externals = poetry
+commands =
+    poetry install -v
+    poetry run flake8 example/
+    poetry run flake8 tests/
+    poetry run pytest
+"""
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
