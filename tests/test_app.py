@@ -32,6 +32,10 @@ def test_post_with_token(client):
     assert 'csrf_token The CSRF token is missing' not in str(response.data)
     # token is still invalid :(
 
+def test_no_message_customization(client):
+    response = client.get('/secret', follow_redirects=True)
+    assert response.status_code == 200
+    assert b'You need to login first' in response.data
 
 # def test_is_logged_in(client):
 #     session.clear()

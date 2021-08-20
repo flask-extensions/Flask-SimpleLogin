@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template
 from flask.views import MethodView
-from flask_simplelogin import SimpleLogin, get_username, login_required
+from flask_simplelogin import SimpleLogin, get_username, login_required, Message
 
 my_users = {
     'chuck': {'password': 'norris', 'roles': ['admin']},
@@ -27,8 +27,19 @@ def check_my_users(user):
 app = Flask(__name__)
 app.config.from_object('settings')
 
-SimpleLogin(app, login_checker=check_my_users)
+messages = {
+    'login_success': Message('login success!', category='success'),
+    'login_failure': Message('invalid credentials', category='danger'),
+    'is_logged_in': Message('already logged in'),
+    'logout': Message('Logged out!'),
+    'login_required': Message('You need to login first', category='warning'),
+    'access_denied': Message('Access Denied'),
+    'auth_error': Message('Authentication Error: {0}')
+}
 
+#I'm not sure what the appropriate naming convention is here.
+simple_login = SimpleLogin(app, login_checker=check_my_users, messages=messages)
+simple_login.disable_messages('login_success','logout')
 
 @app.route('/')
 def index():
