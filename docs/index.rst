@@ -28,7 +28,7 @@ What it does not provide:
 
 Of course you can easily implement all above by your own. Take a look at `example`_.
 
-   .. _example: https://github.com/flask-extensions/flask_simplelogin/tree/master/example
+   .. _example: https://github.com/flask-extensions/flask_simplelogin/tree/main/example
 
 Install
 =======

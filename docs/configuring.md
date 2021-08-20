@@ -75,4 +75,4 @@ SimpleLogin(app)
 
 You can use the `from werkzeug.security import check_password_hash, generate_password_hash` utilities to encrypt passwords.
 
-A working example is available in `manage.py` of [example app](https://github.com/flask-extensions/flask_simplelogin/tree/master/example)
+A working example is available in `manage.py` of [example app](https://github.com/flask-extensions/flask_simplelogin/tree/main/example)
