@@ -29,12 +29,6 @@ def test_post_with_token(client):
     # token is still invalid :(
 
 
-def test_no_message_customization(client):
-    response = client.get("/secret", follow_redirects=True)
-    assert response.status_code == 200
-    assert b"You need to login first" in response.data
-
-
 # def test_is_logged_in(client):
 #     session.clear()
 #     session['csrf_token'] = '123456'

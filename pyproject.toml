@@ -27,6 +27,7 @@ Flask = ">=0.12"
 Flask-WTF = "^0.15.1"
 
 [tool.poetry.dev-dependencies]
+ipdb = "^0.13.9"
 pytest = "^6.2.4"
 pytest-black = "^0.3.12"
 pytest-flake8 = "^1.0.7"

@@ -58,32 +58,16 @@ def test_configs_are_loaded_with_backwards_compatibility(client):
     assert sl.config["home_url"] == "/custom_home/"
 
 
-def test_messages_disabled(app):
-    app = Flask(__name__)
-    app.config["SECRET_KEY"] = "secret-here"
-    sl = SimpleLogin(app, messages=False)
-    for message in sl.messages.values():
-        assert not message.enabled
-
-
 def test_messages_customized(app):
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "secret-here"
-    custom_message_dict = {
-        "login_success": Message(
-            "login_success_custom_message", category="login_success_custom_category"
-        ),
-        "logout": Message(enabled=False),
+    messages = {
+        "login_success": Message("customized login message", category="login_success"),
+        "is_logged_in": "all set",
+        "logout": None,
     }
-    sl = SimpleLogin(app, messages=custom_message_dict)
-    # Assert that custom messages and categories have been changed.
-    assert (
-        custom_message_dict["login_success"].text == sl.messages["login_success"].text
-    )
-    assert (
-        custom_message_dict["login_success"].category
-        == sl.messages["login_success"].category
-    )
-    assert not sl.messages["logout"].enabled
-    # Assert that keys not specified remain the same.
-    assert sl.messages["login_required"].text == "You need to login first"
+    sl = SimpleLogin(app, messages=messages)
+    assert sl.messages["login_success"] == messages["login_success"]
+    assert isinstance(sl.messages["is_logged_in"], Message)
+    assert sl.messages["logout"] is None
+    assert sl.messages["login_required"] == SimpleLogin.messages["login_required"]

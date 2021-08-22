@@ -96,7 +96,7 @@ def login_required(function=None, username=None, basic=False, must=None):
             error = validator(get_username())
             if error is not None:
                 return (
-                    SimpleLogin.get_message("auth_error", error).return_message(),
+                    SimpleLogin.get_message("auth_error", error),
                     403,
                 )
 
@@ -107,9 +107,9 @@ def login_required(function=None, username=None, basic=False, must=None):
         if is_logged_in(username=username):
             return check(must) or fun(*args, **kwargs)
         elif is_logged_in():
-            return SimpleLogin.get_message("access_denied").return_message(), 403
+            return SimpleLogin.get_message("access_denied"), 403
         else:
-            SimpleLogin.get_message("login_required").flash()
+            flash(SimpleLogin.get_message("login_required"), "warning")
             return redirect(url_for("simplelogin.login", next=request.path))
 
     def dispatch_basic_auth(fun, *args, **kwargs):
@@ -142,29 +142,20 @@ def login_required(function=None, username=None, basic=False, must=None):
 
 
 class Message:
-    def __init__(self, text="", category="primary", enabled=True):
+    def __init__(self, text, category="primary"):
         self.text = text
         self.category = category
-        self.enabled = enabled
-
-    def flash(self):
-        if self.text and self.enabled:
-            flash(self.text, self.category)
-
-    def return_message(self):
-        if self.text and self.enabled:
-            return self.text
 
 
-class SimpleLogin(object):
+class SimpleLogin:
     """Simple Flask Login"""
 
     messages = {
-        "login_success": Message("login success!", category="success"),
-        "login_failure": Message("invalid credentials", category="danger"),
+        "login_success": Message("login success!", "success"),
+        "login_failure": Message("invalid credentials", "danger"),
         "is_logged_in": Message("already logged in"),
         "logout": Message("Logged out!"),
-        "login_required": Message("You need to login first", category="warning"),
+        "login_required": Message("You need to login first", "warning"),
         "access_denied": Message("Access Denied"),
         "auth_error": Message("Authentication Error: {0}"),
     }
@@ -174,14 +165,17 @@ class SimpleLogin(object):
         """Helper to get internal messages outside this instance"""
         msg = current_app.extensions["simplelogin"].messages.get(message)
 
-        if args or kwargs:
+        if msg and (args or kwargs):
             msg.text.format(*args, **kwargs)
 
         return msg
 
-    def disable_messages(self, *args, **kwargs):
-        for i in args:
-            self.messages[i].enabled = False
+    def flash_message(self, label):
+        msg = self.messages.get(label)
+        if not msg:
+            return
+
+        flash(msg.text, msg.category)
 
     def __init__(self, app=None, login_checker=None, login_form=None, messages=None):
         self.config = {
@@ -216,17 +210,13 @@ class SimpleLogin(object):
         if login_form:
             self._login_form = login_form
 
-        # If the user is passing a new dictionary
         if messages and isinstance(messages, dict):
-            self.messages.update(messages)
-        # If the user is disabling messages
-        # Must differentiate between None and False.
-        elif messages is False:
-            disabled_messages = {}
-            for key, value in self.messages.items():
-                value.enabled = False
-                disabled_messages[key] = value
-            self.messages.update(disabled_messages)
+            cleaned = {k: v for k, v in messages.items() if k in self.messages.keys()}
+            for key in cleaned.keys():
+                if isinstance(cleaned[key], str):
+                    cleaned[key] = Message(cleaned[key])
+            self.messages.update(cleaned)
+
         self._register(app)
         self._load_config()
         self._set_default_secret()
@@ -320,7 +310,7 @@ class SimpleLogin(object):
         )
 
         if is_logged_in():
-            self.messages["is_logged_in"].flash()
+            self.flash_message("is_logged_in")
             return redirect(destiny)
 
         if request.is_json:
@@ -331,16 +321,17 @@ class SimpleLogin(object):
         ret_code = 200
         if form.validate_on_submit():
             if self._login_checker(form.data):
-                self.messages["login_success"].flash()
+                self.flash_message("login_success")
                 session["simple_logged_in"] = True
                 session["simple_username"] = form.data.get("username")
                 return redirect(destiny)
             else:
-                self.messages["login_failure"].flash()
+                self.flash_message("login_failure")
                 ret_code = 401  # <-- invalid credentials RFC7235
+
         return render_template("login.html", form=form, next=destiny), ret_code
 
     def logout(self):
         session.clear()
-        self.messages["logout"].flash()
+        self.flash_message("logout")
         return redirect(self.config.get("home_url", "/"))
