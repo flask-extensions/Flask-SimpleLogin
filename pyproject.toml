@@ -48,9 +48,7 @@ whitelist_externals = poetry
 commands =
     poetry install -v
     poetry run flake8 --ignore E501,W503 example/
-    poetry run black --check example/
     poetry run flake8 --ignore E501,W503 tests/
-    poetry run black --check tests/
     poetry run pytest
 """
 

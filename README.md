@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/cuducos/flask_simplelogin.svg?style=flat-square)](https://travis-ci.org/cuducos/flask_simplelogin)
+[![GitHub Actions](https://github.com/flask-extensions/flask_simplelogin/workflows/Tests/badge.svg)](https://github.com/flask-extensions/flask_simplelogin/actions/workflows/tests.yml)
 [![PyPI](https://img.shields.io/pypi/v/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![PyPI versions](https://img.shields.io/pypi/pyversions/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![PyPI formats](https://img.shields.io/pypi/format/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
