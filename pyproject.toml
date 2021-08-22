@@ -34,7 +34,7 @@ pytest-flask = "^1.2.0"
 tox = "^3.24.2"
 
 [tool.pytest.ini_options]
-flake8-ignore = ["E501"]
+flake8-ignore = ["E501", "W503"]
 addopts = "--flake8 --black"
 
 [tool.tox]
@@ -47,9 +47,9 @@ envlist = py39, py38, py37, py36
 whitelist_externals = poetry
 commands =
     poetry install -v
-    poetry run flake8 example/
+    poetry run flake8 --ignore E501,W503 example/
     poetry run black --check example/
-    poetry run flake8 tests/
+    poetry run flake8 --ignore E501,W503 tests/
     poetry run black --check tests/
     poetry run pytest
 """

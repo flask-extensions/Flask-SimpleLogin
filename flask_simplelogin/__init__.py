@@ -24,7 +24,6 @@ from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired
 
-from collections import namedtuple
 
 logger = logging.getLogger(__name__)
 
