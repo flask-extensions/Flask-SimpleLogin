@@ -71,6 +71,20 @@ app.config['SIMPLELOGIN_HOME_URL'] = '/en/'
 SimpleLogin(app)
 ```
 
+## Protection against open redirects
+
+Flask Simple Login doesn't allow redirects to external URLs, but it can be configured to do so:
+
+```py
+app.config["ALLOWED_HOSTS"] = ["myothersite.com"]
+```
+
+Then it is possible to redirect to an external URL in the `next=` parameter:
+
+```py
+url_for('simplelogin.login', next='http://myothersite.com/')
+```
+
 ## Encrypting passwords
 
 You can use the `from werkzeug.security import check_password_hash, generate_password_hash` utilities to encrypt passwords.
