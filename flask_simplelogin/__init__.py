@@ -313,7 +313,10 @@ class SimpleLogin:
 
         host_url = urlparse(request.host_url)
         redirect_url = urlparse(urljoin(request.host_url, destiny))
-        if not host_url.netloc == redirect_url.netloc:
+        if (
+            not host_url.netloc == redirect_url.netloc
+            and redirect_url.netloc not in self.app.config.get("ALLOWED_HOSTS", [])
+        ):
             return abort(400, "Invalid next url, can only redirect to the same host")
 
         if is_logged_in():

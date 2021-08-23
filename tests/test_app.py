@@ -38,6 +38,16 @@ def test_negative_redirect_to_external_url(client):
     assert "Invalid next url" in str(response.data)
 
 
+def test_positive_redirect_to_allowed_host(app):
+    app.config["ALLOWED_HOSTS"] = ["myothersite.com"]
+    with app.test_client() as client:
+        response = client.get(
+            url_for("simplelogin.login", next="https://myothersite.com/page"),
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+
+
 # def test_is_logged_in(client):
 #     session.clear()
 #     session['csrf_token'] = '123456'
