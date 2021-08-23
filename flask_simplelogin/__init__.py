@@ -8,9 +8,11 @@ import logging
 import os
 from functools import wraps
 from uuid import uuid4
+from urllib.parse import urlparse, urljoin
 from warnings import warn
 
 from flask import (
+    abort,
     Blueprint,
     current_app,
     flash,
@@ -308,6 +310,11 @@ class SimpleLogin:
             "next",
             default=request.form.get("next", default=self.config.get("home_url", "/")),
         )
+
+        host_url = urlparse(request.host_url)
+        redirect_url = urlparse(urljoin(request.host_url, destiny))
+        if not host_url.netloc == redirect_url.netloc:
+            return abort(400, "Invalid next url, can only redirect to the same host")
 
         if is_logged_in():
             self.flash_message("is_logged_in")

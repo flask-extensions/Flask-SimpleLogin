@@ -29,6 +29,15 @@ def test_post_with_token(client):
     # token is still invalid :(
 
 
+def test_negative_redirect_to_external_url(client):
+    response = client.get(
+        url_for("simplelogin.login", next="https://malicioussite.com/pwowned"),
+        follow_redirects=True,
+    )
+    assert response.status_code == 400
+    assert "Invalid next url" in str(response.data)
+
+
 # def test_is_logged_in(client):
 #     session.clear()
 #     session['csrf_token'] = '123456'
