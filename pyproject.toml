@@ -6,7 +6,7 @@ authors = ["Bruno Rocha <rochacbruno@users.noreply.github.com>"]
 maintainers = ["Eduardo Cuducos <cuducos@users.noreply.github.com>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/flask-extensions/flask_simplelogin"
+repository = "https://github.com/flask-extensions/Flask-SimpleLogin"
 classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.6",

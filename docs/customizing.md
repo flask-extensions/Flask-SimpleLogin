@@ -31,7 +31,7 @@ Example is:
 {% endblock %}
 ```
 
-Take a look at the [example app](https://github.com/flask-extensions/flask_simplelogin/tree/main/example).
+Take a look at the [example app](https://github.com/flask-extensions/Flask-SimpleLogin/tree/main/example).
 
 And you can customize it in anyway you want and need, it receives a `form` in the context and it is a WTForms form. The submit should be done to `request.path` which is the same as the login view.
 
@@ -90,4 +90,4 @@ def protected():
     return render_template('secret.html')
 ```
 
-Take a look at the [example app](https://github.com/flask-extensions/flask_simplelogin/tree/main/example).
+Take a look at the [example app](https://github.com/flask-extensions/Flask-SimpleLogin/tree/main/example).
