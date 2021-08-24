@@ -1,9 +1,9 @@
-[![GitHub Actions](https://github.com/flask-extensions/Flask-SimpleLogin/workflows/Tests/badge.svg)](https://github.com/flask-extensions/Flask-SimpleLogin/actions/workflows/tests.yml)
+[![GitHub Actions](https://img.shields.io/github/workflow/status/flask-extensions/Flask-SimpleLogin/Tests?style=flat-square)](https://github.com/flask-extensions/Flask-SimpleLogin/actions/workflows/tests.yml)
 [![PyPI](https://img.shields.io/pypi/v/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![PyPI versions](https://img.shields.io/pypi/pyversions/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![PyPI formats](https://img.shields.io/pypi/format/flask_simplelogin.svg?style=flat-square)](https://pypi.org/project/flask_simplelogin/)
 [![Flask](https://img.shields.io/badge/Flask-Extension-blue.svg?style=flat-square)](https://github.com/pallets/flask)
-[![Documentation](https://readthedocs.org/projects/flask-simple-login/badge/?version=latest)](https://flask-simple-login.readthedocs.io/en/latest/?badge=latest)
+[![Documentation](https://img.shields.io/readthedocs/flask-simple-login?style=flat-square)](https://flask-simple-login.readthedocs.io/en/latest/?badge=latest)
 
 # Login Extension for Flask
 
