@@ -11,9 +11,13 @@ The simplest way to add login to flask!
 
 ## How it works
 
-First install it from [PyPI](https://pypi.org/project/flask_simplelogin/).
+First, install it from [PyPI](https://pypi.org/project/flask_simplelogin/):
 
-> `pip install flask_simplelogin`
+```console
+$ pip install flask_simplelogin
+```
+
+Then, use it in your app:
 
 ```python
 from flask import Flask
@@ -27,8 +31,8 @@ SimpleLogin(app)
 
 Now you have `/login` and `/logout` routes in your application.
 
-The username defaults to `admin` and the password defaults to `secret` (yeah that's not clever, let's see how to change it)
+The username defaults to `admin` and the password defaults to `secret` — yeah that's not clever, check the [docs](https://flask-simple-login.readthedocs.io/en/latest/?badge=latest) to see how to configure it properly!
 
-![Login Screen](/login_screen.png)
+![Login Screen](./login_screen.png)
 
 Check the [documentation](https://flask-simple-login.readthedocs.io/en/latest/?badge=latest) for more details!
