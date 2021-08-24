@@ -9,12 +9,6 @@
 
 The simplest way to add login to flask!
 
-## Top Contributors
-
-[![](https://sourcerer.io/fame/cuducos/cuducos/Flask-SimpleLogin/images/0)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/0)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/1)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/1)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/2)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/2)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/3)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/3)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/4)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/4)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/5)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/5)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/6)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/6)[![](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/images/7)](https://sourcerer.io/fame/cuducos/cuducos/flask_simplelogin/links/7)
-
-Add yourself, send a PR!
-
 ## How it works
 
 First install it from [PyPI](https://pypi.org/project/flask_simplelogin/).
