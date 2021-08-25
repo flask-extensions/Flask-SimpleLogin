@@ -41,25 +41,29 @@ You can also use `{% if is_logged_in() %}` in your template if needed.
 
 The default message alerts are:
 
-| Key | Message | 
-|---|---|
-| `login_success` | login success! |
-| `login_failure` | invalid credentials |
-| `is_logged_in` | already logged in |
-| `logout` | Logged out! |
-| `login_required` | You need to login first |
-| `access_denied` | Access Denied |
-| `auth_error` | Authentication Error: `{0}` |
+| Key | Message | CSS class |
+|---|---|---|
+| `login_success` | login success! | `primary` |
+| `login_failure` | invalid credentials | `danger` |
+| `is_logged_in` | already logged in | `primary` |
+| `logout` | Logged out! | `primary` |
+| `login_required` | You need to login first | `warning` |
+| `access_denied` | Access Denied | `primary` |
+| `auth_error` | Authentication Error: `{0}` | `primary` |
 
-NOTE: the `{0}` in the authentication_error is a required place holder to pass in the validator error message.
+In the `auth_error` message, the `{0}` in the authentication error is a required placeholder that is replaced by the validator error message.
 
 ```python
+from flask_simplelogin import Message,
+# …
+
 app = Flask(__name__)
+
 messages = {
-    'login_success': 'Você está dentro!',
-    'login_failure': 'ungültige Anmeldeinformationen',
-    'is_logged_in': 'Iam initium',
-    'logout': 'Déconnecté!',
+    'login_success': Message('Você está dentro!'),  # the default CSS class is `primary`
+    'login_failure': 'ungültige Anmeldeinformationen',  # this also uses the default CSS class
+    'is_logged_in': Message('Iam initium', 'success'), # this uses `success` as the CSS class
+    'logout': None, # this disables the message for logout
     'login_required': 'Devi prima accedere',
     'access_denied': 'Acceso denegado',
     'auth_error': '授權錯誤： {0}'
