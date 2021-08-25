@@ -1,10 +1,9 @@
-from flask import url_for
+from unittest.mock import call
+
+from flask import session, url_for
+from itsdangerous import URLSafeTimedSerializer
 
 from flask_simplelogin import is_logged_in
-
-
-CSRF_TOKEN = "IjEwN2Q4ZjZlNWI5NjM5NjRhODk3Yzg0NzZmM2QyYjZhNzNiNDY0OWMi.YSZw7A.IUjf7OkrrCmCcg4IaV92MIrKjQ0"
-CSRF_TOKEN_HASH = "107d8f6e5b963964a897c8476f3d2b6a73b4649c"
 
 
 def test_get_login(client):
@@ -21,11 +20,7 @@ def test_post_requires_token(client):
     assert "csrf_token The CSRF token is missing" in str(response.data)
 
 
-def test_post_with_token(client):
-    with client.session_transaction() as session:
-        session["csrf_token"] = CSRF_TOKEN_HASH
-
-    client.get(url_for("simplelogin.login"))  # creates CSRF token
+def test_post_with_token(app, client):
     response = client.post(
         url_for("simplelogin.login"),
         data={
@@ -57,17 +52,23 @@ def test_positive_redirect_to_allowed_host(app):
         assert response.status_code == 200
 
 
-def test_is_logged_in(client):
-    with client.session_transaction() as session:
-        session["csrf_token"] = CSRF_TOKEN_HASH
+def test_is_logged_in(app, client):
+    def generate_csrf_token_form_value(app):
+        """Based on how Flask-WTF generates it on the fly:
+        https://github.com/wtforms/flask-wtf/blob/main/src/flask_wtf/csrf.py#L54-L63
+        """
+        return URLSafeTimedSerializer(
+            app.config["SECRET_KEY"], salt="wtf-csrf-token"
+        ).dumps(session["csrf_token"])
 
+    client.get(url_for("simplelogin.login"))
     assert not is_logged_in()
     response = client.post(
         url_for("simplelogin.login"),
         data={
             "username": "admin",
             "password": "secret",
-            "csrf_token": CSRF_TOKEN,
+            "csrf_token": generate_csrf_token_form_value(app),
         },
     )
     assert response.status_code == 302
