@@ -4,7 +4,7 @@ from functools import wraps
 
 import click
 from flask import Flask, jsonify, render_template
-from flask_simplelogin import SimpleLogin, login_required
+from flask_simplelogin import Message, SimpleLogin, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
@@ -51,7 +51,12 @@ def create_app():
 
 
 def configure_extensions(app):
-    SimpleLogin(app, login_checker=validate_login)
+    messages = {
+        "login_success": "Welcome!",
+        "is_logged_in": Message("already logged in", "success"),
+        "logout": None,
+    }
+    SimpleLogin(app, login_checker=validate_login, messages=messages)
     if not os.path.exists("users.json"):
         with open("users.json", "a") as json_file:
             # This just touch create a new dbfile

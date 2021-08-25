@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template
 from flask.views import MethodView
-from flask_simplelogin import Message, SimpleLogin, get_username, login_required
+from flask_simplelogin import SimpleLogin, get_username, login_required
 
 my_users = {
     "chuck": {"password": "norris", "roles": ["admin"]},
@@ -28,12 +28,7 @@ app = Flask(__name__)
 app.config.from_object("settings")
 
 
-messages = {
-    "login_success": "Welcome!",
-    "is_logged_in": Message("already logged in", "success"),
-    "logout": None,
-}
-simple_login = SimpleLogin(app, login_checker=check_my_users, messages=messages)
+simple_login = SimpleLogin(app, login_checker=check_my_users)
 
 
 @app.route("/")
