@@ -25,6 +25,10 @@ python = "^3.6"
 click = "^8.0.1"
 Flask = ">=0.12"
 Flask-WTF = "^0.15.1"
+recommonmark = { version = "^0.7.1", optional = true }
+Sphinx = { version = "^4.1.2", optional = true }
+sphinx-markdown-tables = { version = "^0.0.15", optional = true }
+sphinx-rtd-theme = { version = "^0.5.2", optional = true }
 
 [tool.poetry.dev-dependencies]
 ipdb = "^0.13.9"
@@ -35,6 +39,9 @@ pytest-flake8 = "^1.0.7"
 pytest-flask = "^1.2.0"
 pytest-mock = "^3.6.1"
 tox = "^3.24.2"
+
+[tool.poetry.extras]
+docs = ["pip", "recommonmark", "Sphinx", "sphinx-markdown-tables", "sphinx-rtd-theme"]
 
 [tool.pytest.ini_options]
 flake8-ignore = ["E501", "W503"]
