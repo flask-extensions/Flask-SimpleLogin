@@ -30,6 +30,23 @@ from wtforms.validators import DataRequired
 logger = logging.getLogger(__name__)
 
 
+class Message:
+    def __init__(self, text, category="primary"):
+        self.text = text
+        self.category = category
+
+    @classmethod
+    def from_current_app(cls, label):
+        """Helper to get messages from Flask's current_app"""
+        return current_app.extensions["simplelogin"].messages.get(label)
+
+    def __str__(self):
+        return self.text
+
+    def format(self, *args, **kwargs):
+        return self.text.format(*args, **kwargs)
+
+
 class LoginForm(FlaskForm):
     "Default login form"
     username = StringField("name", validators=[DataRequired()])
@@ -92,15 +109,14 @@ def login_required(function=None, username=None, basic=False, must=None):
         """Return in the first validation error, else return None"""
         if validators is None:
             return
+
         if not isinstance(validators, (list, tuple)):
             validators = [validators]
+
         for validator in validators:
             error = validator(get_username())
             if error is not None:
-                return (
-                    SimpleLogin.get_message("auth_error", error),
-                    403,
-                )
+                return Message.from_current_app("auth_error").format(error), 403
 
     def dispatch(fun, *args, **kwargs):
         if basic and request.is_json:
@@ -109,9 +125,9 @@ def login_required(function=None, username=None, basic=False, must=None):
         if is_logged_in(username=username):
             return check(must) or fun(*args, **kwargs)
         elif is_logged_in():
-            return SimpleLogin.get_message("access_denied"), 403
+            return Message.from_current_app("access_denied"), 403
         else:
-            flash(SimpleLogin.get_message("login_required"), "warning")
+            SimpleLogin.flash("login_required")
             return redirect(url_for("simplelogin.login", next=request.path))
 
     def dispatch_basic_auth(fun, *args, **kwargs):
@@ -143,12 +159,6 @@ def login_required(function=None, username=None, basic=False, must=None):
     return decorator
 
 
-class Message:
-    def __init__(self, text, category="primary"):
-        self.text = text
-        self.category = category
-
-
 class SimpleLogin:
     """Simple Flask Login"""
 
@@ -163,21 +173,15 @@ class SimpleLogin:
     }
 
     @staticmethod
-    def get_message(message, *args, **kwargs):
-        """Helper to get internal messages outside this instance"""
-        msg = current_app.extensions["simplelogin"].messages.get(message)
-
-        if msg and (args or kwargs):
-            msg.text.format(*args, **kwargs)
-
-        return msg
-
-    def flash_message(self, label):
-        msg = self.messages.get(label)
+    def flash(label, *args, **kwargs):
+        msg = Message.from_current_app(label)
         if not msg:
             return
 
-        flash(msg.text, msg.category)
+        if args or kwargs:
+            flash(msg.format(*args, **kwargs), msg.category)
+        else:
+            flash(msg.text, msg.category)
 
     def __init__(self, app=None, login_checker=None, login_form=None, messages=None):
         self.config = {
@@ -320,7 +324,7 @@ class SimpleLogin:
             return abort(400, "Invalid next url, can only redirect to the same host")
 
         if is_logged_in():
-            self.flash_message("is_logged_in")
+            self.flash("is_logged_in")
             return redirect(destiny)
 
         if request.is_json:
@@ -331,17 +335,17 @@ class SimpleLogin:
         ret_code = 200
         if form.validate_on_submit():
             if self._login_checker(form.data):
-                self.flash_message("login_success")
+                self.flash("login_success")
                 session["simple_logged_in"] = True
                 session["simple_username"] = form.data.get("username")
                 return redirect(destiny)
             else:
-                self.flash_message("login_failure")
+                self.flash("login_failure")
                 ret_code = 401  # <-- invalid credentials RFC7235
 
         return render_template("login.html", form=form, next=destiny), ret_code
 
     def logout(self):
         session.clear()
-        self.flash_message("logout")
+        self.flash("logout")
         return redirect(self.config.get("home_url", "/"))

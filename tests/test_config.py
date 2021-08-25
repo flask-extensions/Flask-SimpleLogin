@@ -58,7 +58,7 @@ def test_configs_are_loaded_with_backwards_compatibility(client):
     assert sl.config["home_url"] == "/custom_home/"
 
 
-def test_messages_customized(app):
+def test_custom_messages():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = "secret-here"
     messages = {
@@ -66,6 +66,7 @@ def test_messages_customized(app):
         "is_logged_in": "all set",
         "logout": None,
     }
+
     sl = SimpleLogin(app, messages=messages)
     assert sl.messages["login_success"] == messages["login_success"]
     assert isinstance(sl.messages["is_logged_in"], Message)

@@ -73,3 +73,17 @@ def test_is_logged_in(app, client):
     )
     assert response.status_code == 302
     assert is_logged_in()
+
+
+def test_flash(app, mocker):
+    mock_flash = mocker.patch("flask_simplelogin.flash")
+    app.extensions["simplelogin"].flash("login_success")
+    app.extensions["simplelogin"].flash("login_failure")
+    app.extensions["simplelogin"].flash("auth_error", "nasty bug")
+    mock_flash.assert_has_calls(
+        (
+            call("login success!", "success"),
+            call("invalid credentials", "danger"),
+            call("Authentication Error: nasty bug", "primary"),
+        )
+    )
