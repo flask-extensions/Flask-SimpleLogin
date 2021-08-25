@@ -1,7 +1,8 @@
 import pytest
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, session
 from flask.views import MethodView
 from flask_simplelogin import SimpleLogin, login_required, get_username
+from itsdangerous import URLSafeTimedSerializer
 
 
 @pytest.fixture
@@ -49,3 +50,18 @@ def app():
     myapp.add_url_rule("/protected", view_func=ProtectedView.as_view("protected"))
 
     return myapp
+
+
+@pytest.fixture
+def csrf_token_for():
+    """Based on how Flask-WTF generates it on the fly:
+    https://github.com/wtforms/flask-wtf/blob/main/src/flask_wtf/csrf.py#L54-L63
+    """
+
+    def generator(app):
+        serilaizer = URLSafeTimedSerializer(
+            app.config["SECRET_KEY"], salt="wtf-csrf-token"
+        )
+        return serilaizer.dumps(session["csrf_token"])
+
+    return generator

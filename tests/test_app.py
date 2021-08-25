@@ -1,7 +1,6 @@
 from unittest.mock import call
 
-from flask import session, url_for
-from itsdangerous import URLSafeTimedSerializer
+from flask import url_for
 
 from flask_simplelogin import is_logged_in
 
@@ -52,15 +51,7 @@ def test_positive_redirect_to_allowed_host(app):
         assert response.status_code == 200
 
 
-def test_is_logged_in(app, client):
-    def generate_csrf_token_form_value(app):
-        """Based on how Flask-WTF generates it on the fly:
-        https://github.com/wtforms/flask-wtf/blob/main/src/flask_wtf/csrf.py#L54-L63
-        """
-        return URLSafeTimedSerializer(
-            app.config["SECRET_KEY"], salt="wtf-csrf-token"
-        ).dumps(session["csrf_token"])
-
+def test_is_logged_in(app, client, csrf_token_for):
     client.get(url_for("simplelogin.login"))
     assert not is_logged_in()
     response = client.post(
@@ -68,11 +59,27 @@ def test_is_logged_in(app, client):
         data={
             "username": "admin",
             "password": "secret",
-            "csrf_token": generate_csrf_token_form_value(app),
+            "csrf_token": csrf_token_for(app),
         },
     )
     assert response.status_code == 302
     assert is_logged_in()
+
+
+def test_logout(app, client, csrf_token_for):
+    client.get(url_for("simplelogin.login"))
+    assert not is_logged_in()
+    client.post(
+        url_for("simplelogin.login"),
+        data={
+            "username": "admin",
+            "password": "secret",
+            "csrf_token": csrf_token_for(app),
+        },
+    )
+    assert is_logged_in()
+    client.get(url_for("simplelogin.logout"))
+    assert not is_logged_in()
 
 
 def test_flash(app, mocker):
