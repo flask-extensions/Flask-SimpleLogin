@@ -9,6 +9,7 @@ from functools import wraps
 from uuid import uuid4
 from urllib.parse import urlparse, urljoin
 from warnings import warn
+import inspect
 
 from flask import (
     abort,
@@ -22,7 +23,7 @@ from flask import (
     url_for,
 )
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
+from wtforms import PasswordField, StringField, Field
 from wtforms.validators import DataRequired
 
 
@@ -48,7 +49,10 @@ class Message:
 
 class LoginForm(FlaskForm):
     "Default login form"
-    username = StringField("name", validators=[DataRequired()], render_kw={"autocapitalize": "none"})
+    kwargs = {"validators": [DataRequired()]}
+    if "render_kw" in inspect.signature(Field.__init__).parameters:
+        kwargs["render_kw"] = {"autocapitalize": "none"}
+    username = StringField("name", **kwargs)
     password = PasswordField("password", validators=[DataRequired()])
 
 

@@ -557,17 +557,6 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "prompt-toolkit"
-version = "3.0.3"
-description = "Library for building powerful interactive command lines in Python"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-wcwidth = "*"
-
-[[package]]
-name = "prompt-toolkit"
 version = "3.0.20"
 description = "Library for building powerful interactive command lines in Python"
 category = "dev"
@@ -939,20 +928,6 @@ virtualenv = ">=16.0.0,<20.0.0 || >20.0.0,<20.0.1 || >20.0.1,<20.0.2 || >20.0.2,
 [package.extras]
 docs = ["pygments-github-lexers (>=0.0.5)", "sphinx (>=2.0.0)", "sphinxcontrib-autoprogram (>=0.1.5)", "towncrier (>=18.5.0)"]
 testing = ["flaky (>=3.4.0)", "freezegun (>=0.3.11)", "psutil (>=5.6.1)", "pytest (>=4.0.0)", "pytest-cov (>=2.5.1)", "pytest-mock (>=1.10.0)", "pytest-randomly (>=1.0.0)", "pytest-xdist (>=1.22.2)", "pathlib2 (>=2.3.3)"]
-
-[[package]]
-name = "traitlets"
-version = "5.0.5"
-description = "Traitlets Python configuration system"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-ipython-genutils = "*"
-
-[package.extras]
-test = ["pytest"]
 
 [[package]]
 name = "traitlets"
@@ -1366,8 +1341,6 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 prompt-toolkit = [
-    {file = "prompt_toolkit-3.0.3-py3-none-any.whl", hash = "sha256:c93e53af97f630f12f5f62a3274e79527936ed466f038953dfa379d4941f651a"},
-    {file = "prompt_toolkit-3.0.3.tar.gz", hash = "sha256:a402e9bf468b63314e37460b68ba68243d55b2f8c4d0192f85a019af3945050e"},
     {file = "prompt_toolkit-3.0.20-py3-none-any.whl", hash = "sha256:6076e46efae19b1e0ca1ec003ed37a933dc94b4d20f486235d436e64771dcd5c"},
     {file = "prompt_toolkit-3.0.20.tar.gz", hash = "sha256:eb71d5a6b72ce6db177af4a7d4d7085b99756bf656d98ffcc4fecd36850eea6c"},
 ]
@@ -1526,8 +1499,6 @@ tox = [
     {file = "tox-3.24.3.tar.gz", hash = "sha256:c6c4e77705ada004283610fd6d9ba4f77bc85d235447f875df9f0ba1bc23b634"},
 ]
 traitlets = [
-    {file = "traitlets-5.0.5-py3-none-any.whl", hash = "sha256:69ff3f9d5351f31a7ad80443c2674b7099df13cc41fc5fa6e2f6d3b0330b0426"},
-    {file = "traitlets-5.0.5.tar.gz", hash = "sha256:178f4ce988f69189f7e523337a3e11d91c786ded9360174a3d9ca83e79bc5396"},
     {file = "traitlets-4.3.3-py2.py3-none-any.whl", hash = "sha256:70b4c6a1d9019d7b4f6846832288f86998aa3b9207c6821f3578a6a6a467fe44"},
     {file = "traitlets-4.3.3.tar.gz", hash = "sha256:d023ee369ddd2763310e4c3eae1ff649689440d4ae59d7485eb4cfbbe3e359f7"},
 ]
