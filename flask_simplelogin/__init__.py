@@ -48,7 +48,7 @@ class Message:
 
 class LoginForm(FlaskForm):
     "Default login form"
-    username = StringField("name", validators=[DataRequired()])
+    username = StringField("name", validators=[DataRequired()], render_kw={"autocapitalize": "none"})
     password = PasswordField("password", validators=[DataRequired()])
 
 
