@@ -29,15 +29,35 @@
       {% endfor %}
     </ul>
     {% endif %}
+    
+    <div class="d-flex h-100">
+        <div class="m-auto">
+            <form action="{{ url_for('simplelogin.login') }}" method="post">
+            {{ form.csrf_token }}
+                <div class="form-group row">
+                    <label for="username" class="col-sm-3 col-form-label">{{form.username.label}}</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label">{{form.password.label}}</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                </div>
+                
+                {% if next %}<input type="hidden" name="next" value="{{next}}">{% endif %}
+            
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                </div>
+    
+            </form>
+        </div>
+     </div>
 
-    <form action="{{ url_for('simplelogin.login') }}" method="post">
-      <div class="form-group">
-      {{ form.csrf_token }}
-      {{form.username.label}}<div class="form-control">{{ form.username }}</div><br>
-      {{form.password.label}}<div class="form-control"> {{ form.password }}</div><br>
-      {% if next %}<input type="hidden" name="next" value="{{next}}">{% endif %}
-      </form>
-     <input type="submit" value="Send">
-    </form>
 </body>
 </html>
