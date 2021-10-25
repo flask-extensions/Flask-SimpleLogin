@@ -2,8 +2,7 @@
 
 ## Customizing templates
 
-There are only one template to customize and it is called `login.html`.
-Example is:
+There is only one template to customize and it is called `login.html`, e.g.:
 
 ```python
 {% extends 'base.html' %}
@@ -20,14 +19,14 @@ Example is:
 {% endblock %}
 
 {% block page_body %}
-       <form action="{{ url_for('simplelogin.login', next=request.args.get('next', '/')) }}" method="post">
-            <div class="form-group">
-            {{ form.csrf_token }}
-            {{form.username.label}}<div class="form-control">{{ form.username }}</div><br>
-            {{form.password.label}}<div class="form-control"> {{ form.password }}</div><br>
-            </form>
-           <input type="submit" value="Send">
-       </form>
+    <form action="{{ url_for('simplelogin.login', next=request.args.get('next', '/')) }}" method="post">
+      <div class="form-group">
+        {{ form.csrf_token }}
+        {{form.username.label}}<div class="form-control">{{ form.username }}</div><br>
+        {{form.password.label}}<div class="form-control"> {{ form.password }}</div><br>
+      </div>
+      <input type="submit" value="Send">
+    </form>
 {% endblock %}
 ```
 
