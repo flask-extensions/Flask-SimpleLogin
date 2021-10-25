@@ -25,6 +25,7 @@ python = "^3.6"
 click = "^8.0.1"
 Flask = ">=0.12"
 Flask-WTF = "^0.15.1"
+WTForms = ">=2.1"
 recommonmark = { version = "^0.7.1", optional = true }
 Sphinx = { version = "^4.1.2", optional = true }
 sphinx-markdown-tables = { version = "^0.0.15", optional = true }
