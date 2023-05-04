@@ -9,10 +9,10 @@ readme = "README.md"
 repository = "https://github.com/flask-extensions/Flask-SimpleLogin"
 classifiers = [
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Framework :: Flask",
@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 click = "^8.0.1"
 Flask = ">=0.12"
 Flask-WTF = ">1.1"
@@ -52,7 +52,7 @@ addopts = "--flake8 --black --cov flask_simplelogin --cov-report term --cov-fail
 legacy_tox_ini = """
 [tox]
 isolated_build = true
-envlist = py39, py38, py37, py36
+envlist = py311, py310, py39, py38
 
 [testenv]
 whitelist_externals = poetry
