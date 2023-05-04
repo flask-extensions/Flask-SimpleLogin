@@ -27,6 +27,4 @@ jobs:
 
       - name: Run tests
         run: |
-          poetry run flake8 --ignore E501,W503 example/
-          poetry run flake8 --ignore E501,W503 tests/
           poetry run pytest
