@@ -30,6 +30,7 @@ recommonmark = { version = "^0.7.1", optional = true }
 Sphinx = { version = "^4.1.2", optional = true }
 sphinx-markdown-tables = { version = "^0.0.15", optional = true }
 sphinx-rtd-theme = { version = "^0.5.2", optional = true }
+markdown = { version = "<3.4", optional = true }
 
 [tool.poetry.group.dev.dependencies]
 ipdb = "^0.13.9"
@@ -42,7 +43,7 @@ pytest-ruff = "^0.0.6"
 tox = "^3.24.2"
 
 [tool.poetry.extras]
-docs = ["pip", "recommonmark", "Sphinx", "sphinx-markdown-tables", "sphinx-rtd-theme"]
+docs = ["markdown", "pip", "recommonmark", "Sphinx", "sphinx-markdown-tables", "sphinx-rtd-theme"]
 
 [tool.pytest.ini_options]
 addopts = "--ruff --black --cov flask_simplelogin --cov-report term --cov-fail-under=70"
