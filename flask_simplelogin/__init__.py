@@ -1,4 +1,5 @@
 """Flask Simple Login - Login Extension for Flask"""
+
 __author__ = "Bruno Rocha"
 __email__ = "rochacbruno@gmail.com"
 
@@ -48,6 +49,7 @@ class Message:
 
 class LoginForm(FlaskForm):
     "Default login form"
+
     username = StringField(
         "name", validators=[DataRequired()], render_kw={"autocapitalize": "none"}
     )
