@@ -51,6 +51,17 @@ def test_positive_redirect_to_allowed_host(app):
         assert response.status_code == 200
 
 
+def test_positive_redirect_for_a_json_resquest(app):
+    app.config["ALLOWED_HOSTS"] = ["myothersite.com"]
+    with app.test_client() as client:
+        response = client.get(
+            url_for("simplelogin.login", next="https://myothersite.com/page"),
+            headers={"Content-Type": "application/json"},
+            follow_redirects=True,
+        )
+        assert response.status_code == 200
+
+
 def test_is_logged_in(app, client, csrf_token_for):
     client.get(url_for("simplelogin.login"))
     assert not is_logged_in()

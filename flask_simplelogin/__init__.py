@@ -330,7 +330,7 @@ class SimpleLogin:
 
         if request.is_json:
             # recommended to use `login_required(basic=True)` instead this
-            return self.basic_auth(destiny=redirect(destiny))
+            return self.basic_auth(redirect(destiny))
 
         form = self._login_form()
         ret_code = 200
