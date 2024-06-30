@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flask_simplelogin"
-version = "0.1.2"
+version = "0.1.3"
 description = "Flask Simple Login - Login Extension for Flask"
 authors = ["Bruno Rocha <rochacbruno@users.noreply.github.com>"]
 maintainers = ["Eduardo Cuducos <cuducos@users.noreply.github.com>"]
