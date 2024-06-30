@@ -1,3 +1,4 @@
+from base64 import b64encode
 from unittest.mock import call
 
 from flask import url_for
@@ -51,17 +52,6 @@ def test_positive_redirect_to_allowed_host(app):
         assert response.status_code == 200
 
 
-def test_positive_redirect_for_a_json_resquest(app):
-    app.config["ALLOWED_HOSTS"] = ["myothersite.com"]
-    with app.test_client() as client:
-        response = client.get(
-            url_for("simplelogin.login", next="https://myothersite.com/page"),
-            headers={"Content-Type": "application/json"},
-            follow_redirects=True,
-        )
-        assert response.status_code == 200
-
-
 def test_is_logged_in(app, client, csrf_token_for):
     client.get(url_for("simplelogin.login"))
     assert not is_logged_in()
@@ -72,6 +62,18 @@ def test_is_logged_in(app, client, csrf_token_for):
             "password": "secret",
             "csrf_token": csrf_token_for(app),
         },
+    )
+    assert response.status_code == 302
+    assert is_logged_in()
+
+
+def test_is_logged_in_from_json_request(app, client):
+    client.get(url_for("simplelogin.login"))
+    assert not is_logged_in()
+    auth = b64encode(b"admin:secret").decode("utf-8")
+    response = client.post(
+        url_for("simplelogin.login"),
+        headers={"Authorization": f"Basic {auth}", "Content-Type": "application/json"},
     )
     assert response.status_code == 302
     assert is_logged_in()
