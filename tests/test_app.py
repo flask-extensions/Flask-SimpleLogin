@@ -80,6 +80,20 @@ def test_is_logged_in_from_json_request(app, client):
 
 
 def test_logout(app, client, csrf_token_for):
+    callback_called = []
+
+    def callback1():
+        nonlocal callback_called
+        callback_called.append(True)
+
+    def callback2():
+        nonlocal callback_called
+        callback_called.append(True)
+
+    simplelogin = app.extensions["simplelogin"]
+    simplelogin.register_on_logout_callback(callback1)
+    simplelogin.register_on_logout_callback(callback2)
+
     client.get(url_for("simplelogin.login"))
     assert not is_logged_in()
     client.post(
@@ -93,6 +107,8 @@ def test_logout(app, client, csrf_token_for):
     assert is_logged_in()
     client.get(url_for("simplelogin.logout"))
     assert not is_logged_in()
+
+    assert callback_called == [True, True]
 
 
 def test_flash(app, mocker):
