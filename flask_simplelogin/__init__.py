@@ -357,7 +357,6 @@ class SimpleLogin:
         session.clear()
         self.flash("logout")
 
-        # call all registered callbacks
         for callback in self.on_logout_callbacks:
             callback()
 
