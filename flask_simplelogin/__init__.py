@@ -196,6 +196,7 @@ class SimpleLogin:
         self.app = None
         self._login_checker = login_checker or default_login_checker
         self._login_form = login_form or LoginForm
+        self.on_logout_callbacks = []
         if app is not None:
             self.init_app(
                 app=app,
@@ -348,7 +349,15 @@ class SimpleLogin:
 
         return render_template("login.html", form=form, next=destiny), ret_code
 
+    def register_on_logout_callback(self, callback):
+        """Register a callback to be called on logout"""
+        self.on_logout_callbacks.append(callback)
+
     def logout(self):
         session.clear()
         self.flash("logout")
+
+        for callback in self.on_logout_callbacks:
+            callback()
+
         return redirect(self.config.get("home_url", "/"))
