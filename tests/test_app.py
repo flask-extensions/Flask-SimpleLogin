@@ -1,5 +1,5 @@
 from base64 import b64encode
-from unittest.mock import call
+from unittest.mock import call, Mock
 
 from flask import url_for
 
@@ -80,6 +80,13 @@ def test_is_logged_in_from_json_request(app, client):
 
 
 def test_logout(app, client, csrf_token_for):
+    callback1 = Mock()
+    callback2 = Mock()
+
+    simplelogin = app.extensions["simplelogin"]
+    simplelogin.register_on_logout_callback(callback1)
+    simplelogin.register_on_logout_callback(callback2)
+
     client.get(url_for("simplelogin.login"))
     assert not is_logged_in()
     client.post(
@@ -93,6 +100,9 @@ def test_logout(app, client, csrf_token_for):
     assert is_logged_in()
     client.get(url_for("simplelogin.logout"))
     assert not is_logged_in()
+
+    callback1.assert_called_once()
+    callback2.assert_called_once()
 
 
 def test_flash(app, mocker):

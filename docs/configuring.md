@@ -90,3 +90,27 @@ url_for('simplelogin.login', next='http://myothersite.com/')
 You can use the `from werkzeug.security import check_password_hash, generate_password_hash` utilities to encrypt passwords.
 
 A working example is available in `manage.py` of [example app](https://github.com/flask-extensions/Flask-SimpleLogin/tree/main/example)
+
+## Registering Custom Logout Callback(s)
+
+You can define multiple custom logout callbacks to be executed after the user logs out using the `register_on_logout_callback` method:
+
+```python
+from flask import Flask
+from flask_simplelogin import SimpleLogin
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'something-secret'
+simple_login = SimpleLogin(app)
+
+def my_post_logout_callback():
+    print("User has logged out")
+
+def another_post_logout_callback():
+    print("Another action after logout")
+
+simple_login.register_on_logout_callback(my_post_logout_callback)
+simple_login.register_on_logout_callback(another_post_logout_callback)
+```
+
+The callbacks will be executed in the order they were registered.
