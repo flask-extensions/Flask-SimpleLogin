@@ -1,0 +1,18 @@
+@startuml
+title Sequence Diagram - Create Item Flow
+
+actor User
+participant "Flask App" as Flask
+participant "SimpleLogin (login_required)" as LoginCheck
+participant "get_username()" as UsernameFetcher
+
+User -> Flask : POST /create (dengan session cookie)
+Flask -> LoginCheck : Verifikasi session
+LoginCheck -> UsernameFetcher : get_username()
+UsernameFetcher --> LoginCheck : "chuck"
+
+LoginCheck --> Flask : Authenticated
+Flask -> Flask : Simulasi pembuatan item
+Flask --> User : JSON {"message": "Item created by chuck"}
+
+@enduml

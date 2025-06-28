@@ -1,0 +1,33 @@
+@startuml
+title Sequence Diagram - Login Flow (GitHub Codespaces)
+
+actor User
+participant "Flask App" as Flask
+participant "SimpleLogin" as SimpleLogin
+participant "check_my_users()" as Checker
+participant "my_users dict" as Users
+
+== Halaman Login ==
+User -> Flask : GET /login
+Flask -> SimpleLogin : Render halaman login
+SimpleLogin --> Flask : Halaman login (form)
+Flask --> User : Form login HTML
+
+== Submit Form Login ==
+User -> Flask : POST /login (username & password)
+Flask -> SimpleLogin : Proses login
+
+SimpleLogin -> Checker : check_my_users(user)
+Checker -> Users : Ambil data user dari dict
+Users --> Checker : Password & role data
+Checker --> SimpleLogin : True (login sukses) / False
+
+alt Login Berhasil
+    SimpleLogin -> Flask : Buat session login
+    Flask --> User : Redirect ke halaman dashboard
+else Login Gagal
+    SimpleLogin --> Flask : Invalid credentials
+    Flask --> User : Tampilkan error di form login
+end
+
+@enduml
