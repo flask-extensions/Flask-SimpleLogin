@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath("."))
 # -- Project information -----------------------------------------------------
 
 project = "Flask Simple Login"
-copyright = "2020, Maely Brandão"
+copyright = "2020, Maely Brandão"  # noqa: A001
 author = "Maely Brandão"
 
 
@@ -66,4 +66,4 @@ pygments_style = "sphinx"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path: list[str] = []

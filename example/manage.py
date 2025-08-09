@@ -4,21 +4,22 @@ from functools import wraps
 
 import click
 from flask import Flask, jsonify, render_template
-from flask_simplelogin import Message, SimpleLogin, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from flask_simplelogin import Message, SimpleLogin, login_required
 
 # [ -- Utils -- ]
 
 
 def validate_login(user):
-    db_users = json.load(open("users.json"))
+    with open("users.json") as handler:
+        db_users = json.load(handler)
+
     if not db_users.get(user["username"]):
         return False
+
     stored_password = db_users[user["username"]]["password"]
-    if check_password_hash(stored_password, user["password"]):
-        return True
-    return False
+    return check_password_hash(stored_password, user["password"])
 
 
 def create_user(**data):
@@ -33,11 +34,16 @@ def create_user(**data):
 
     # Here you insert the `data` in your users database
     # for this simple example we are recording in a json file
-    db_users = json.load(open("users.json"))
+    with open("users.json") as handler:
+        db_users = json.load(handler)
+
     # add the new created user to json
     db_users[data["username"]] = data
+
     # commit changes to database
-    json.dump(db_users, open("users.json", "w"))
+    with open("users.json", "w") as handler:
+        json.dump(db_users, handler)
+
     return data
 
 

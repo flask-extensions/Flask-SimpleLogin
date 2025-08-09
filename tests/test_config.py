@@ -1,6 +1,7 @@
 import pytest
 from flask import Flask
-from flask_simplelogin import SimpleLogin, Message
+
+from flask_simplelogin import Message, SimpleLogin
 
 
 class Settings(dict):

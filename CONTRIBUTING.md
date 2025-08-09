@@ -16,6 +16,14 @@ To run tests with all supported Python versions:
 $ uv run tox
 ```
 
+## Linter, format & type check
+
+```console
+$ uv run ruff check . --fix
+$ uv run ruff format .
+$ uv run mypy .
+```
+
 ## Docs
 
 To build the docs, use [Sphinx](https://www.sphinx-doc.org/en/):

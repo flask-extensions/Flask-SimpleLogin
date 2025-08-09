@@ -1,8 +1,9 @@
 import pytest
 from flask import Flask, jsonify, render_template, session
 from flask.views import MethodView
-from flask_simplelogin import SimpleLogin, login_required, get_username
 from itsdangerous import URLSafeTimedSerializer
+
+from flask_simplelogin import SimpleLogin, get_username, login_required
 
 
 @pytest.fixture

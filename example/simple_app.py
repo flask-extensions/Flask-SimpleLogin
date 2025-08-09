@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template
 from flask.views import MethodView
+
 from flask_simplelogin import SimpleLogin, get_username, login_required
 
 my_users = {

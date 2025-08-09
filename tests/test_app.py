@@ -1,5 +1,5 @@
 from base64 import b64encode
-from unittest.mock import call, Mock
+from unittest.mock import Mock, call
 
 from flask import url_for
 
