@@ -1,23 +1,19 @@
 # Mini contribution guide
 
-The package uses `pyproject.toml` and [Poetry](https://python-poetry.org/). To install the dependencies:
-
-```console
-$ poetry install --extras "docs"
-```
+The requires [`uv`](https://docs.astral.sh/uv/).
 
 ## Tests
 
 To run tests with the current Python version:
 
 ```console
-$ poetry run pytest
+$ uv run pytest
 ```
 
 To run tests with all supported Python versions:
 
 ```console
-$ poetry run tox
+$ uv run tox
 ```
 
 ## Docs
@@ -25,7 +21,7 @@ $ poetry run tox
 To build the docs, use [Sphinx](https://www.sphinx-doc.org/en/):
 
 ```console
-$ poetry run sphinx-build docs docs/_build
+$ uv run --group docs sphinx-build docs docs/_build
 ```
 
 Then, browse from `docs/_build/index.html`.
