@@ -1,13 +1,8 @@
 version: 2
 build:
-  os: "ubuntu-22.04"
+  os: "ubuntu-24.04"
   tools:
-    python: "3.11"
-sphinx:
-  configuration: docs/conf.py
-python:
-  install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - docs
+    python: "3.12"
+  commands:
+    - pip install uv
+    - uv run --group docs python -m sphinx docs $READTHEDOCS_OUTPUT/html -b html -W
