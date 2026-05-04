@@ -1,6 +1,6 @@
 [project]
 name = "flask_simplelogin"
-version = "0.2.0"
+version = "0.3.0"
 description = "Flask Simple Login - Login Extension for Flask"
 authors = [{ name = "Bruno Rocha", email = "rochacbruno@users.noreply.github.com" }]
 requires-python = ">=3.10,<4"
