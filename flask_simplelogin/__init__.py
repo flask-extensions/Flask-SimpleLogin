@@ -90,7 +90,7 @@ def is_logged_in(username: str | Iterable[str] | None = None) -> bool:
     if username:
         if isinstance(username, str):
             username = (username,)
-            got = get_username()
+        got = get_username()
         return (
             "simple_logged_in" in session and isinstance(got, str) and got in username
         )

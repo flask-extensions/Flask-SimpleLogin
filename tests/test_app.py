@@ -1,7 +1,7 @@
 from base64 import b64encode
 from unittest.mock import Mock, call
 
-from flask import url_for
+from flask import session, url_for
 
 from flask_simplelogin import is_logged_in
 
@@ -103,6 +103,49 @@ def test_logout(app, client, csrf_token_for):
 
     callback1.assert_called_once()
     callback2.assert_called_once()
+
+
+def test_login_required_with_username_list_allows_match(app, csrf_token_for):
+    app.config["SIMPLELOGIN_USERNAME"] = "user1"
+    app.config["SIMPLELOGIN_PASSWORD"] = "secret"
+    with app.test_client() as client:
+        client.get(url_for("simplelogin.login"))
+        client.post(
+            url_for("simplelogin.login"),
+            data={
+                "username": "user1",
+                "password": "secret",
+                "csrf_token": csrf_token_for(app),
+            },
+        )
+        response = client.get("/username_required")
+        assert response.status_code == 200
+        assert b"This is Safe" in response.data
+
+
+def test_login_required_with_username_list_denies_non_match(
+    app, client, csrf_token_for
+):
+    client.get(url_for("simplelogin.login"))
+    client.post(
+        url_for("simplelogin.login"),
+        data={
+            "username": "admin",
+            "password": "secret",
+            "csrf_token": csrf_token_for(app),
+        },
+    )
+    response = client.get("/username_required")
+    assert response.status_code == 403
+
+
+def test_is_logged_in_accepts_username_list(app):
+    with app.test_request_context():
+        session["simple_logged_in"] = True
+        session["simple_username"] = "user1"
+        assert is_logged_in(["user1", "user2"]) is True
+        assert is_logged_in(["admin", "other"]) is False
+        assert is_logged_in(("user1",)) is True
 
 
 def test_flash(app, mocker):
