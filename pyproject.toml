@@ -13,6 +13,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Framework :: Flask",
@@ -67,7 +68,7 @@ addopts = "--ruff --ruff-format --cov flask_simplelogin --cov-report term --cov-
 legacy_tox_ini = """
 [tox]
 isolated_build = true
-envlist = py313, py312, py311, py310
+envlist = py314, py313, py312, py311, py310
 
 [testenv]
 commands = uv run pytest
